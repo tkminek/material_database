@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% block title %}
+Material list
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{material_type.name}}
+</h1>
+<ul>
+    {% for item in material_ls %}
+    <li>{{item}}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

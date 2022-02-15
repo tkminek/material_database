@@ -16,7 +16,7 @@ class Material(models.Model):
     Re = models.FloatField()
     Ru = models.FloatField()
     comment = models.CharField(max_length=1000)
-    material_type = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
+    material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -27,7 +27,7 @@ class CyclicCurve(models.Model):
     K = models.FloatField(max_length=200)
     n = models.FloatField(max_length=200)
     comment = models.CharField(max_length=1000)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -40,7 +40,7 @@ class EnCurve(models.Model):
     c = models.FloatField()
     Ef = models.FloatField()
     comment = models.CharField(max_length=1000)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -51,7 +51,7 @@ class SnCurve(models.Model):
     Sa = models.CharField(max_length=2000)
     Nf = models.CharField(max_length=2000)
     comment = models.CharField(max_length=1000)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
