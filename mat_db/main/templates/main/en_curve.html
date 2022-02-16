@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% block title %}
+Curve info
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{material_info.name}}
+</h1>
+<ul>
+    <li>Name of curve: {{curve_info.name}}</li>
+    <li>Fatigue strength coefficient {{curve_info.Sf}} [ MPa ]</li>
+    <li>Fatigue strength exponent {{curve_info.b}} [ - ]</li>
+    <li>Fatigue ductility coefficient {{curve_info.Ef}} [ - ]</li>
+    <li>Fatigue ductility exponent {{curve_info.c}} [ - ]</li>
+    <li><p>{{curve_info.comment}}</p></li>
+</ul>
+{% endblock %}

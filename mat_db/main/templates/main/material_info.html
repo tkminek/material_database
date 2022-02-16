@@ -16,7 +16,7 @@ Material info
 <h2>Material curves</h2>
 <ul>
     {% for item in curve_ls %}
-        <li>{{item.name}}</li>
+        <li><a href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a></li>
     {% empty %}
         <li>Sorry no available data</li>
     {% endfor %}

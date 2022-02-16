@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% block title %}
+Curve info
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{material_info.name}}
+</h1>
+<ul>
+    <li>Name of curve: {{curve_info.name}}</li>
+    <li>Name of curve: {{curve_info.Sa}}</li>
+    <li>Name of curve: {{curve_info.Nf}}</li>
+    <li><p>{{curve_info.comment}}</p></li>
+</ul>
+{% endblock %}
