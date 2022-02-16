@@ -9,7 +9,9 @@ Material list
 </h1>
 <ul>
     {% for item in material_ls %}
-    <li><a href="{%url 'material_info' item.id item.id%}">{{item.name}}</a></li>
+        <li><a href="{%url 'material_info' item.id item.id%}">{{item.name}}</a></li>
+    {% empty %}
+        <li>Sorry no available data</li>
     {% endfor %}
 </ul>
 

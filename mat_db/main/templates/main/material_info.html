@@ -4,17 +4,21 @@ Material info
 {% endblock %}
 
 {% block content %}
-<h1>
-    {{material_info.name}}
-</h1>
+<h1>{{material_info.name}}</h1>
 <ul>
     <li>E = {{material_info.E}} [ MPa ]</li>
     <li>nu = {{material_info.nu}} [ - ]</li>
     <li>Rm = {{material_info.Rm}} [ MPa ]</li>
     <li>Re = {{material_info.Re}} [ MPa ]</li>
     <li>Ru = {{material_info.Ru}} [ MPa ]</li>
-    <li><p>comment : {{material_info.comment}}</p>
-    </li>
+    <li><p>comment : {{material_info.comment}}</p></li>
 </ul>
-
+<h2>Material curves</h2>
+<ul>
+    {% for item in curve_ls %}
+        <li>{{item.name}}</li>
+    {% empty %}
+        <li>Sorry no available data</li>
+    {% endfor %}
+</ul>
 {% endblock %}
