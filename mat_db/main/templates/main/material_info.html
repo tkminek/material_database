@@ -6,11 +6,11 @@ Material info
 {% block content %}
 <h1>{{material_info.name}}</h1>
 <ul>
-    <li>E = {{material_info.E}} [ MPa ]</li>
-    <li>nu = {{material_info.nu}} [ - ]</li>
-    <li>Rm = {{material_info.Rm}} [ MPa ]</li>
-    <li>Re = {{material_info.Re}} [ MPa ]</li>
-    <li>Ru = {{material_info.Ru}} [ MPa ]</li>
+    <li> Young's modulus modulus - E : {{material_info.E}} [ MPa ]</li>
+    <li> Poisson's ratio - nu : {{material_info.nu}} [ - ]</li>
+    <li> Ultimate tensile strength - Rm : {{material_info.Rm}} [ MPa ]</li>
+    <li> Yield strength - Re : {{material_info.Re}} [ MPa ]</li>
+    <li> Fatigue limit - Ru : {{material_info.Ru}} [ MPa ]</li>
     <li><p>comment : {{material_info.comment}}</p></li>
 </ul>
 <h2>Material curves</h2>
