@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve
 
 
@@ -13,6 +13,11 @@ def material_type_list(response):
 
 
 def material_list(response, material_type_id):
-    material_type=MaterialType.objects.get(pk=material_type_id)
+    material_type = MaterialType.objects.get(pk=material_type_id)
     material_ls = Material.objects.filter(material_type_id=material_type_id)
-    return render(response, "main/material_list.html", {"material_ls": material_ls, "material_type":material_type})
+    return render(response, "main/material_list.html", {"material_ls": material_ls, "material_type": material_type})
+
+
+def material_info(response, material_type_id, material_id):
+    material_info = Material.objects.get(pk=material_id)
+    return render(response, "main/material_info.html", {"material_info": material_info})
