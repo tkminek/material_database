@@ -47,10 +47,12 @@ def curve_info(response, material_type_id, material_id, curve_name):
         })
     elif EnCurve.objects.filter(name=curve_name).exists():
         curve_info = EnCurve.objects.get(material_id=material_id)
+        data = Graph().en_curve(curve_info, Material.objects.get(pk=material_id).E)
         return render(response, "main/en_curve.html", {
             "material_type": material_type,
             "curve_info": curve_info,
             "material_info": material_info,
+            "data": data,
         })
     elif SnCurve.objects.filter(name=curve_name).exists():
         curve_info = SnCurve.objects.get(material_id=material_id)

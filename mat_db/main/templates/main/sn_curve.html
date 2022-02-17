@@ -13,4 +13,33 @@ Curve info
     <li>Name of curve: {{curve_info.Nf}}</li>
     <li><p>{{curve_info.comment}}</p></li>
 </ul>
+<div id = "container" style = "width: 900px; height: 500px; margin: 0 auto">
+      <script language = "JavaScript">
+         function drawChart() {
+            // Define the chart to be drawn.
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Ea');
+            data.addColumn('number', 'Stress Amplitude');
+            data.addRows({{data|safe}});
+
+            // Set chart options
+            var options = {'title' : '{{curve_info.name}} curve',
+               hAxis: {
+                  title: 'Strain Amplitude [ uE ]'
+               },
+               vAxis: {
+                  title: 'Stress Amplitude [ MPa ] '
+               },
+               'width':550,
+               'height':400,
+               curveType: 'function'
+            };
+
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.LineChart(document.getElementById('container'));
+            chart.draw(data, options);
+         }
+         google.charts.setOnLoadCallback(drawChart);
+      </script>
+</div>
 {% endblock %}

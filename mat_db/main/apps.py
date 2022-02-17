@@ -7,11 +7,26 @@ class MainConfig(AppConfig):
 
 
 class Graph:
-    def cyclic_curve(self, data, E):
-        K = data.K
+    @staticmethod
+    def cyclic_curve(data, e):
+        k = data.K
         n = data.n
-        data=[]
+        data = []
         for sa in range(0, 1000, 10):
-            ea=sa/E+(sa/K)**(1/n)
+            ea = sa/e+(sa/k)**(1/n)
             data.append([ea, sa])
+        return data
+
+    @staticmethod
+    def en_curve(data, e):
+        sf = data.Sf
+        b = data.b
+        c = data.c
+        ef = data.Ef
+        data = []
+        nf = 1
+        while nf < int(5e11):
+            ea = sf/e*(nf**b)+ef*(nf**c)
+            data.append([nf, ea])
+            nf *= 10
         return data
