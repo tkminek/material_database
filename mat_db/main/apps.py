@@ -30,3 +30,12 @@ class Graph:
             data.append([nf, ea])
             nf *= 10
         return data
+
+    @staticmethod
+    def sn_curve(data):
+        sa = data.Sa.split(",")
+        nf = data.Nf.split(",")
+        data = []
+        for s, c in zip(sa, nf):
+            data.append([float(c), float(s)])
+        return data
