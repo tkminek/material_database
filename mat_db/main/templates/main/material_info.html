@@ -4,7 +4,9 @@ Material info
 {% endblock %}
 
 {% block content %}
-<h1>{{material_info.name}}</h1>
+<h1 class="mt-2">{{material_info.name}}</h1>
+    <hr class="mt-0 mb-4">
+
 <ul>
     <li> Young's modulus modulus - E : {{material_info.E}} [ MPa ]</li>
     <li> Poisson's ratio - nu : {{material_info.nu}} [ - ]</li>

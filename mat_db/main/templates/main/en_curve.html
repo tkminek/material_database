@@ -4,47 +4,54 @@ Curve info
 {% endblock %}
 
 {% block content %}
-<h1>
-    {{material_info.name}}
-</h1>
-<ul>
-    <li>Name of curve: {{curve_info.name}}</li>
-    <li>Fatigue strength coefficient {{curve_info.Sf}} [ MPa ]</li>
-    <li>Fatigue strength exponent {{curve_info.b}} [ - ]</li>
-    <li>Fatigue ductility coefficient {{curve_info.Ef}} [ - ]</li>
-    <li>Fatigue ductility exponent {{curve_info.c}} [ - ]</li>
-    <li><p>{{curve_info.comment}}</p></li>
-</ul>
-<div id = "container" style = "width: 900px; height: 500px; margin: 0 auto">
-      <script language = "JavaScript">
-         function drawChart() {
-            // Define the chart to be drawn.
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'nf');
-            data.addColumn('number', 'Strain amplitude');
-            data.addRows({{data|safe}});
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="mt-2">{{material_info.name}}</h1>
+        <hr class="mt-0 mb-4">
+        <ul>
+            <li>Name of curve: {{curve_info.name}}</li>
+            <li>Fatigue strength coefficient {{curve_info.Sf}} [ MPa ]</li>
+            <li>Fatigue strength exponent {{curve_info.b}} [ - ]</li>
+            <li>Fatigue ductility coefficient {{curve_info.Ef}} [ - ]</li>
+            <li>Fatigue ductility exponent {{curve_info.c}} [ - ]</li>
+            <li><p>{{curve_info.comment}}</p></li>
+        </ul>
+    </div>
+    <div class="col-sm">
+        <div id = "container" style = "width: 600px; height: 200px; margin: 0 auto">
+              <script language = "JavaScript">
+                 function drawChart() {
+                    // Define the chart to be drawn.
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('number', 'nf');
+                    data.addColumn('number', 'Strain amplitude');
+                    data.addRows({{data|safe}});
 
-            // Set chart options
-            var options = {'title' : '{{curve_info.name}}  - x:log , y:log  ',
-               hAxis: {
-                  title: ' Number of cycles to failure [ nf ]',
-                  scaleType: 'log',
-                  format: 'scientific'
-               },
-               vAxis: {
-                  title: ' Strain Amplitude [ uE ] ',
-                  scaleType: 'log',
-               },
-               'width':700,
-               'height':600,
-               curveType: 'function'
-            };
+                    // Set chart options
+                    var options = {'title' : '{{curve_info.name}}  - x:log , y:log  ',
+                       hAxis: {
+                          title: ' Number of cycles to failure [ nf ]',
+                          scaleType: 'log',
+                          format: 'scientific'
+                       },
+                       vAxis: {
+                          title: ' Strain Amplitude [ uE ] ',
+                          scaleType: 'log',
+                       },
+                       'width':700,
+                       'height':600,
+                       curveType: 'function'
+                    };
 
-            // Instantiate and draw the chart.
-            var chart = new google.visualization.LineChart(document.getElementById('container'));
-            chart.draw(data, options);
-         }
-         google.charts.setOnLoadCallback(drawChart);
-      </script>
+                    // Instantiate and draw the chart.
+                    var chart = new google.visualization.LineChart(document.getElementById('container'));
+                    chart.draw(data, options);
+                 }
+                 google.charts.setOnLoadCallback(drawChart);
+              </script>
+        </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

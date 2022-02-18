@@ -4,9 +4,8 @@ Material types+
 {% endblock %}
 
 {% block content %}
-<h1>
-    Material types
-</h1>
+<h1 class="mt-2">Material types</h1>
+    <hr class="mt-0 mb-4">
 <ul>
     {% for item in mat_type_ls %}
     <li><a href="{%url 'material_list' item.id%}">{{item.name}}</a></li>
