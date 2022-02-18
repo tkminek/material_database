@@ -7,9 +7,11 @@ Material list
 <h1 class="mt-2">{{material_type.name}}</h1>
     <hr class="mt-0 mb-4">
 
-<ul>
+<ul class="list-group">
     {% for item in material_ls %}
-        <li><a href="{%url 'material_info' material_type.id item.id%}">{{item.name}}</a></li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{%url 'material_info' material_type.id item.id%}"><h5 style="color:black">{{item.name}}</h5></a>
+        </li>
     {% empty %}
         <li>Sorry no available data</li>
     {% endfor %}

@@ -10,7 +10,13 @@ def home(response):
 
 def material_type_list(response):
     mat_type_ls = MaterialType.objects.all()
-    return render(response, "main/material_type_list.html", {"mat_type_ls": mat_type_ls})
+    count_ls={}
+    for mat_type in mat_type_ls:
+        mat_id=mat_type.id
+        count_ls[mat_type]=Material.objects.filter(material_type_id=mat_id).count()
+    return render(response, "main/material_type_list.html",{
+                      "count_ls": count_ls,
+                   })
 
 
 def material_list(response, material_type_id):
