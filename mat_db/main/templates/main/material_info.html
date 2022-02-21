@@ -4,23 +4,35 @@ Material info
 {% endblock %}
 
 {% block content %}
-<h1 class="mt-2">{{material_info.name}}</h1>
-    <hr class="mt-0 mb-4">
-
-<ul>
-    <li> Young's modulus modulus - E : {{material_info.E}} [ MPa ]</li>
-    <li> Poisson's ratio - nu : {{material_info.nu}} [ - ]</li>
-    <li> Ultimate tensile strength - Rm : {{material_info.Rm}} [ MPa ]</li>
-    <li> Yield strength - Re : {{material_info.Re}} [ MPa ]</li>
-    <li> Fatigue limit - Ru : {{material_info.Ru}} [ MPa ]</li>
-    <li><p>comment : {{material_info.comment}}</p></li>
-</ul>
-<h2>Material curves</h2>
-<ul>
-    {% for item in curve_ls %}
-        <li><a href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a></li>
-    {% empty %}
-        <li>Sorry no available data</li>
-    {% endfor %}
-</ul>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="mt-2">{{material_info.name}}</h1>
+            <hr class="mt-0 mb-4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+        <h3 class="mt-2">Material properties : </h3>
+            <ul>
+                <li> Young's modulus modulus - E : {{material_info.E}} [ MPa ]</li>
+                <li> Poisson's ratio - nu : {{material_info.nu}} [ - ]</li>
+                <li> Ultimate tensile strength - Rm : {{material_info.Rm}} [ MPa ]</li>
+                <li> Yield strength - Re : {{material_info.Re}} [ MPa ]</li>
+                <li> Fatigue limit - Ru : {{material_info.Ru}} [ MPa ]</li>
+                <li><p>comment : {{material_info.comment}}</p></li>
+            </ul>
+            </div>
+    <div class="col-sm">
+        <h3 class="mt-2">Material curves : </h3>
+        <ul>
+            {% for item in curve_ls %}
+                <li><a href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a></li>
+            {% empty %}
+                <li>Sorry no available data</li>
+            {% endfor %}
+        </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}
