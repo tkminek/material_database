@@ -2,14 +2,14 @@ from django.db import models
 
 
 class MaterialType(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Material(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,unique=True)
     E = models.FloatField()
     nu = models.FloatField()
     Rm = models.FloatField()
@@ -23,7 +23,7 @@ class Material(models.Model):
 
 
 class CyclicCurve(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,unique=True)
     K = models.FloatField(max_length=200)
     n = models.FloatField(max_length=200)
     comment = models.CharField(max_length=1000)
@@ -34,7 +34,7 @@ class CyclicCurve(models.Model):
 
 
 class EnCurve(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,unique=True)
     Sf = models.FloatField()
     b = models.FloatField()
     c = models.FloatField()
@@ -47,9 +47,9 @@ class EnCurve(models.Model):
 
 
 class SnCurve(models.Model):
-    name = models.CharField(max_length=200)
-    Sa = models.CharField(max_length=2000)
-    Nf = models.CharField(max_length=2000)
+    name = models.CharField(max_length=200,unique=True)
+    Sa = models.CharField(max_length=20000)
+    Nf = models.CharField(max_length=20000)
     comment = models.CharField(max_length=1000)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 

@@ -8,10 +8,10 @@ Material list
     <hr class="mt-0 mb-4">
 
 {% for item in material_ls %}
-<a class="btn btn-outline-secondary btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
+<a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
 <br><br>
 {% empty %}
-<li>Sorry no available data</li>
+<li><h2>Sorry no available data</h2></li>
 {% endfor %}
 
 

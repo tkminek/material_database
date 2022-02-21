@@ -12,24 +12,64 @@ Material info
     </div>
   </div>
   <div class="row">
-    <div class="col-sm">
+    <div class="col-md-7">
         <h3 class="mt-2">Material properties : </h3>
-            <ul>
-                <li> Young's modulus modulus - E : {{material_info.E}} [ MPa ]</li>
-                <li> Poisson's ratio - nu : {{material_info.nu}} [ - ]</li>
-                <li> Ultimate tensile strength - Rm : {{material_info.Rm}} [ MPa ]</li>
-                <li> Yield strength - Re : {{material_info.Re}} [ MPa ]</li>
-                <li> Fatigue limit - Ru : {{material_info.Ru}} [ MPa ]</li>
-                <li><p>comment : {{material_info.comment}}</p></li>
-            </ul>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Physical property</th>
+                <th scope="col">Value</th>
+                <th scope="col">Unit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Young's modulus modulus</th>
+                <th scope="row">E</th>
+                <th scope="row">{{material_info.E}}</th>
+                <th scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th scope="row">Poisson's ratio</th>
+                <th scope="row">μ</th>
+                <th scope="row">{{material_info.nu}}</th>
+                <th scope="row">-</th>
+            </tr>
+            <tr>
+                <th scope="row">Ultimate tensile strength</th>
+                <th scope="row">Rm</th>
+                <th scope="row">{{material_info.Rm}}</th>
+                <th scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th scope="row">Yield stress</th>
+                <th scope="row">Re</th>
+                <th scope="row">{{material_info.Re}}</th>
+                <th scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th scope="row">Fatigue limit</th>
+                <th scope="row">Ru</th>
+                <th scope="row">{{material_info.Ru}}</th>
+                <th scope="row">MPa</th>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{material_info.comment}}</p>
+        </div>
             </div>
-    <div class="col-sm">
-        <h3 class="mt-2">Material curves : </h3>
+    <div class="col-md-3 offset-md-2">
+        <h3 class="mt-4">Material curves :</h3>
+        <br>
         <ul>
             {% for item in curve_ls %}
-                <li><a href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a></li>
+                <a class="btn btn-outline-info btn-sm" href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a>
+                <br><br>
             {% empty %}
-                <li>Sorry no available data</li>
+                <li><h2>Sorry no available data</h2></li>
             {% endfor %}
         </ul>
     </div>
