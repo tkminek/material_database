@@ -6,17 +6,36 @@ Curve info
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-sm">
+    <div class="col-md-6">
         <h1 class="mt-2">{{material_info.name}}</h1>
         <hr class="mt-0 mb-4">
-        <ul>
-            <li>Name of curve: {{curve_info.name}}</li>
-            <li>Stress amplitude points - Sa: {{curve_info.Sa}}</li>
-            <li>Number of cycles points - Nf: {{curve_info.Nf}}</li>
-            <li><p>{{curve_info.comment}}</p></li>
-        </ul>
+        <div>
+            <p class="mb-0"><h5>Curve name : {{curve_info.name}}</h5></p>
+        </div>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
+                <th scope="col">Number of cycles:<br> Nf [-]</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in data%}
+                <tr>
+                {% for cell in row%}
+                        <th scope="row">{{cell}}</th>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{curve_info.comment}}</p>
+        </div>
     </div>
-    <div class="col-sm">
+    <div class="col-md-4">
         <div id = "container" style = "width: 600px; height: 200px; margin: 0 auto">
               <script language = "JavaScript">
                  function drawChart() {
@@ -36,8 +55,8 @@ Curve info
                        vAxis: {
                           title: ' Stress Amplitude [ MPa ] ',
                        },
-                       'width':700,
-                       'height':600,
+                       'width':600,
+                       'height':500,
                        curveType: 'function'
                     };
 

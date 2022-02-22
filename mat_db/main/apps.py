@@ -37,5 +37,5 @@ class Graph:
         nf = data.Nf.split(",")
         data = []
         for s, c in zip(sa, nf):
-            data.append([float(c), float(s)])
+            data.append([float(c), round(float(s),1)])
         return data

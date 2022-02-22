@@ -6,17 +6,42 @@ Curve info
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-sm">
+    <div class="col-md-6">
         <h1 class="mt-2">{{material_info.name}}</h1>
         <hr class="mt-0 mb-4">
-        <ul>
-            <li>Name of curve: {{curve_info.name}}</li>
-            <li>Cyclic strain hardening coefficient - K: {{curve_info.K}} [ MPa ]</li>
-            <li>Cyclic strain hardening exponent - n: {{curve_info.n}} [ - ]</li>
-            <li><p>{{curve_info.comment}}</p></li>
-        </ul>
+        <div>
+            <p class="mb-0"><h5>Curve name : {{curve_info.name}}</h5></p>
+        </div>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Physical property</th>
+                <th scope="col">Value</th>
+                <th scope="col">Unit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Cyclic strain hardening coefficient</th>
+                <th scope="row">K</th>
+                <th scope="row">{{curve_info.K}}</th>
+                <th scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th scope="row">Cyclic strain hardening exponent</th>
+                <th scope="row">n</th>
+                <th scope="row">{{curve_info.n}}</th>
+                <th scope="row">-</th>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{curve_info.comment}}</p>
+        </div>
     </div>
-    <div class="col-sm">
+    <div class="col-md-4">
         <div id = "container" style = "width: 600px; height: 200px; margin: 0 auto">
               <script language = "JavaScript">
                  function drawChart() {
@@ -34,8 +59,8 @@ Curve info
                        vAxis: {
                           title: 'Stress Amplitude [ MPa ] '
                        },
-                       'width':700,
-                       'height':600,
+                       'width':600,
+                       'height':500,
                        curveType: 'function'
                     };
 
