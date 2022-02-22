@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve
 from itertools import chain
 from .apps import Graph
 
@@ -31,7 +31,8 @@ def material_info(response, material_type_id, material_id):
     c_curve=CyclicCurve.objects.filter(material_id=material_id)
     en_curve = EnCurve.objects.filter(material_id=material_id)
     sn_curve = SnCurve.objects.filter(material_id=material_id)
-    curve_ls=list(chain(c_curve,en_curve,sn_curve))
+    s_curve = StaticCurve.objects.filter(material_id=material_id)
+    curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
     return render(response, "main/material_info.html", {
         "material_type": material_type,
         "material_info": material_info,
@@ -64,6 +65,15 @@ def curve_info(response, material_type_id, material_id, curve_name):
         curve_info = SnCurve.objects.get(material_id=material_id)
         data = Graph().sn_curve(curve_info)
         return render(response, "main/sn_curve.html", {
+            "material_type": material_type,
+            "curve_info": curve_info,
+            "material_info": material_info,
+            "data": data,
+        })
+    elif StaticCurve.objects.filter(name=curve_name).exists():
+        curve_info = StaticCurve.objects.get(material_id=material_id)
+        data = Graph().static_curve(curve_info, Material.objects.get(pk=material_id).E)
+        return render(response, "main/static_curve.html", {
             "material_type": material_type,
             "curve_info": curve_info,
             "material_info": material_info,

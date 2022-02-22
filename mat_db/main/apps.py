@@ -39,3 +39,13 @@ class Graph:
         for s, c in zip(sa, nf):
             data.append([float(c), round(float(s),1)])
         return data
+
+    @staticmethod
+    def static_curve(data, e):
+        k = data.K
+        n = data.n
+        data = []
+        for sa in range(0, 1000, 10):
+            ea = sa / e + (sa / k) ** (1 / n)
+            data.append([ea, sa])
+        return data
