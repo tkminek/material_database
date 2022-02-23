@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
 from itertools import chain
 from .apps import Graph
+
 
 def home(response):
     return render(response, "main/home.html", {})
@@ -13,7 +14,9 @@ def material_type_list(response):
     count_ls={}
     for mat_type in mat_type_ls:
         mat_id=mat_type.id
-        count_ls[mat_type]=Material.objects.filter(material_type_id=mat_id).count()
+        count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
+        if Material.objects.filter(material_type_id=mat_id).count() == 0:
+            count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
     return render(response, "main/material_type_list.html",{
                       "count_ls": count_ls,
                    })
@@ -21,23 +24,38 @@ def material_type_list(response):
 
 def material_list(response, material_type_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
-    material_ls = Material.objects.filter(material_type_id=material_type_id)
-    return render(response, "main/material_list.html", {"material_ls": material_ls, "material_type": material_type})
+    if len(material_type.hose_set.all()) != 0:
+        hose_ls = Hose.objects.filter(material_type_id=material_type_id)
+        return render(response, "main/hose_list.html", {"hose_ls": hose_ls, "material_type": material_type})
+    else:
+        material_ls = Material.objects.filter(material_type_id=material_type_id)
+        return render(response, "main/material_list.html", {"material_ls": material_ls, "material_type": material_type})
 
 
 def material_info(response, material_type_id, material_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
-    material_info = Material.objects.get(pk=material_id)
-    c_curve=CyclicCurve.objects.filter(material_id=material_id)
-    en_curve = EnCurve.objects.filter(material_id=material_id)
-    sn_curve = SnCurve.objects.filter(material_id=material_id)
-    s_curve = StaticCurve.objects.filter(material_id=material_id)
-    curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
-    return render(response, "main/material_info.html", {
-        "material_type": material_type,
-        "material_info": material_info,
-        "curve_ls": curve_ls,
-    })
+    if len(material_type.hose_set.all()) != 0:
+        hose_info = Hose.objects.get(pk=material_id)
+        hose_static_info = HoseStatic.objects.get(hose_id=material_id)
+        hose_dynamic_info = HoseDynamic.objects.get(hose_id=material_id)
+        return render(response, "main/hose_info.html", {
+            "material_type": material_type,
+            "hose_info": hose_info,
+            "hose_static_info": hose_static_info,
+            "hose_dynamic_info": hose_dynamic_info,
+        })
+    else:
+        material_info = Material.objects.get(pk=material_id)
+        c_curve=CyclicCurve.objects.filter(material_id=material_id)
+        en_curve = EnCurve.objects.filter(material_id=material_id)
+        sn_curve = SnCurve.objects.filter(material_id=material_id)
+        s_curve = StaticCurve.objects.filter(material_id=material_id)
+        curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
+        return render(response, "main/material_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "curve_ls": curve_ls,
+        })
 
 
 def curve_info(response, material_type_id, material_id, curve_name):

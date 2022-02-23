@@ -16,15 +16,15 @@ Curve info
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
-                <th scope="col">Number of cycles:<br> Nf [-]</th>
+                <th class="text-center align-middle" scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
+                <th class="text-center align-middle" scope="col">Number of cycles:<br> Nf [-]</th>
             </tr>
             </thead>
             <tbody>
             {% for row in data%}
                 <tr>
                 {% for cell in row%}
-                        <th scope="row">{{cell}}</th>
+                        <th class="text-center align-middle" scope="row">{{cell}}</th>
                 {% endfor %}
                 </tr>
             {% endfor %}

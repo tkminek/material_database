@@ -66,3 +66,42 @@ class SnCurve(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Hose(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    type = models.CharField(max_length=200)
+    material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class HoseStatic(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    E_min40 = models.FloatField()
+    E_plus23 = models.FloatField()
+    E_plus100 = models.FloatField()
+    nu_min40 = models.FloatField(default=0.495)
+    nu_plus23 = models.FloatField(default=0.495)
+    nu_plus100 = models.FloatField(default=0.495)
+    comment = models.CharField(max_length=1000)
+    hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class HoseDynamic(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    E_min40 = models.FloatField()
+    E_plus23 = models.FloatField()
+    E_plus100 = models.FloatField()
+    nu_min40 = models.FloatField(default=0.495)
+    nu_plus23 = models.FloatField(default=0.495)
+    nu_plus100 = models.FloatField(default=0.495)
+    comment = models.CharField(max_length=1000)
+    hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

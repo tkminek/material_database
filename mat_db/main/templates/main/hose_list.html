@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+{% block title %}
+Material list
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-2">{{material_type.name}}</h1>
+<hr class="mt-0 mb-4">
+<br>
+{% for item in hose_ls %}
+<a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
+<br><br>
+{% empty %}
+<h2>Sorry no available data</h2>
+{% endfor %}
+<br>
+<hr class="mt-0 mb-4">
+<input type=button value="Back to Hose type list" onClick="javascript:history.go(-1);">
+{% endblock %}

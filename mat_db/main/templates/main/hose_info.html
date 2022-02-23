@@ -1,0 +1,96 @@
+{% extends "main/base.html" %}
+{% block title %}
+Hose info
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="mt-2">{{hose_info.name}}</h1>
+            <hr class="mt-0 mb-4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+        <h3 class="mt-2">{{hose_static_info.name}} : </h3>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th colspan="2" style="background:white; border-top: hidden" class="text-center align-middle" scope="col"></th>
+                <th colspan="3" class="text-center align-middle" scope="col">Temperature [ °C ]</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">Description</th>
+                <th class="text-center align-middle" scope="col">Physical property</th>
+                <th class="text-center align-middle" scope="col">-40</th>
+                <th class="text-center align-middle" scope="col">23</th>
+                <th class="text-center align-middle" scope="col">100</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="text-center align-middle" scope="row">Young's modulus</th>
+                <th class="text-center align-middle" scope="row">E [MPa]</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.E_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.E_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.E_plus100}}</th>
+             </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Poisson's ratio</th>
+                <th class="text-center align-middle" scope="row">μ [-]</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_plus100}}</th>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{hose_static_info.comment}}</p>
+        </div>
+    </div>
+    <div class="col-md-5 offset-md-2">
+        <h3 class="mt-2">{{hose_dynamic_info.name}} : </h3>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th colspan="2" style="background:white; border-top: hidden" class="text-center align-middle" scope="col"></th>
+                <th colspan="3" class="text-center align-middle" scope="col">Temperature [ °C ]</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">Description</th>
+                <th class="text-center align-middle" scope="col">Physical property</th>
+                <th class="text-center align-middle" scope="col">-40</th>
+                <th class="text-center align-middle" scope="col">23</th>
+                <th class="text-center align-middle" scope="col">100</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="text-center align-middle" scope="row">Young's modulus</th>
+                <th class="text-center align-middle" scope="row">E [MPa]</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_plus100}}</th>
+             </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Poisson's ratio</th>
+                <th class="text-center align-middle" scope="row">μ [-]</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_plus100}}</th>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{hose_dynamic_info.comment}}</p>
+        </div>
+    </div>
+  </div>
+</div>
+<br>
+<hr class="mt-0 mb-4">
+<input type=button value="Back to {{material_type.name}} list" onClick="javascript:history.go(-1);">
+{% endblock %}
