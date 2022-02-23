@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
 from itertools import chain
 from .apps import Graph
+from . filters import MaterialFilter
 
 
 def home(response):
@@ -11,13 +12,13 @@ def home(response):
 
 def material_type_list(response):
     mat_type_ls = MaterialType.objects.all()
-    count_ls={}
+    count_ls = {}
     for mat_type in mat_type_ls:
-        mat_id=mat_type.id
+        mat_id = mat_type.id
         count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
         if Material.objects.filter(material_type_id=mat_id).count() == 0:
             count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
-    return render(response, "main/material_type_list.html",{
+    return render(response, "main/material_type_list.html", {
                       "count_ls": count_ls,
                    })
 
@@ -26,10 +27,22 @@ def material_list(response, material_type_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     if len(material_type.hose_set.all()) != 0:
         hose_ls = Hose.objects.filter(material_type_id=material_type_id)
-        return render(response, "main/hose_list.html", {"hose_ls": hose_ls, "material_type": material_type})
+        my_filter = MaterialFilter(response.GET, queryset=hose_ls)
+        hose_ls = my_filter.qs
+        return render(response, "main/hose_list.html", {
+            "hose_ls": hose_ls,
+            "material_type": material_type,
+            "my_filter": my_filter,
+        })
     else:
         material_ls = Material.objects.filter(material_type_id=material_type_id)
-        return render(response, "main/material_list.html", {"material_ls": material_ls, "material_type": material_type})
+        my_filter = MaterialFilter(response.GET, queryset=material_ls)
+        material_ls = my_filter.qs
+        return render(response, "main/material_list.html", {
+            "material_ls": material_ls,
+            "material_type": material_type,
+            "my_filter": my_filter,
+            })
 
 
 def material_info(response, material_type_id, material_id):
