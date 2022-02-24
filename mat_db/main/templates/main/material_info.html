@@ -4,6 +4,7 @@ Material info
 {% endblock %}
 
 {% block content %}
+<br>
 <div class="container">
   <div class="row">
     <div class="col-sm">
@@ -13,7 +14,8 @@ Material info
   </div>
   <div class="row">
     <div class="col-md-7">
-        <h3 class="mt-2">Material properties : </h3>
+    <div class="card card-body">
+        <h3 class="mt-2">Material properties</h3>
         <br>
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -57,25 +59,51 @@ Material info
             </tr>
             </tbody>
         </table>
-        <div>
+    </div>
+    <br>
+    <div class="col-md-14">
+        <div class="card card-body">
             <p class="mb-0">comment : {{material_info.comment}}</p>
         </div>
-            </div>
-    <div class="col-md-3 offset-md-2">
-        <h3 class="mt-4">Material curves :</h3>
-        <br>
-        <ul>
-            {% for item in curve_ls %}
-                <a class="btn btn-outline-info btn-sm" href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a>
-                <br><br>
-            {% empty %}
-                <h2>Sorry no available data</h2>
-            {% endfor %}
-        </ul>
     </div>
+    </div>
+    <div class="col-md-5 offset-md-0">
+    <div class="card card-body">
+      <h3 class="mt-2">Material curves</h3>
+      <br>
+      <table class="table table-striped">
+         <thead class="thead-dark">
+         <tr>
+             <th class="text-center align-middle" scope="col">Material </th>
+             <th class="text-center align-middle" scope="col">Action</th>
+         </tr>
+         </thead>
+         <tbody>
+             {% for item in curve_ls %}
+             <tr>
+                 <td class="text-center align-middle">
+                     <a class="btn btn-outline-dark btn-sm" href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a>
+                 </td>
+                 <td class="text-center align-middle">
+                   <div class="btn btn-info" href="">Edit</div>
+                   <div class="btn btn-danger" href="">Delete</div>
+                 </td>
+             </tr>
+             {% empty %}
+             <h2>Sorry no available data</h2>
+             {% endfor %}
+         </tbody>
+       </table>
+    </div>
+    <br>
+    <div class="col-md-14">
+        <div class="card card-body">
+            <div class="btn btn-success " href="">Add curve</div>
+        </div>
+    </div>
+  </div>
   </div>
 </div>
 <br>
-<hr class="mt-0 mb-4">
-<input type=button value="Back to {{material_type.name}} list" onClick="javascript:history.go(-1);">
+<input class="btn btn-primary" type=button value="Back to {{material_type.name}} list" onClick="javascript:history.go(-1);">
 {% endblock %}

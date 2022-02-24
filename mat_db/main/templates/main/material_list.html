@@ -4,6 +4,7 @@ Material list
 {% endblock %}
 
 {% block content %}
+<br>
 <h1 class="mt-2">{{material_type.name}}</h1>
 <hr class="mt-0 mb-4">
 <br>
@@ -14,13 +15,35 @@ Material list
    </form>
 </div>
 <br>
-{% for item in material_ls %}
-<a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
-<br><br>
-{% empty %}
-<h2>Sorry no available data</h2>
-{% endfor %}
+<div class="card card-body">
+   <table class="table table-striped">
+     <thead class="thead-dark">
+     <tr>
+         <th class="text-center align-middle" scope="col">Material </th>
+         <th class="text-center align-middle" scope="col">Action</th>
+     </tr>
+     </thead>
+     <tbody>
+         {% for item in material_ls %}
+         <tr>
+             <td class="text-center align-middle">
+                 <a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
+             </td>
+             <td class="text-center align-middle">
+               <div class="btn btn-info" href="">Edit</div>
+               <div class="btn btn-danger" href="">Delete</div>
+             </td>
+         </tr>
+         {% empty %}
+         <h2>Sorry no available data</h2>
+         {% endfor %}
+     </tbody>
+   </table>
+</div>
 <br>
-<hr class="mt-0 mb-4">
-<button onclick="location.href = '/material_type_list'">Back to material type</button>
+<div class="card card-body">
+    <div class="btn btn-success " href="">Add material</div>
+</div>
+<br>
+<a class="btn btn-primary" href="/material_type_list" role="button">Back to material type</a>
 {% endblock %}

@@ -4,11 +4,17 @@ Curve info
 {% endblock %}
 
 {% block content %}
+<br>
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm">
         <h1 class="mt-2">{{material_info.name}}</h1>
-        <hr class="mt-0 mb-4">
+            <hr class="mt-0 mb-4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    <div class="card card-body">
         <div>
             <p class="mb-0"><h5>Curve name : {{curve_info.name}}</h5></p>
         </div>
@@ -49,12 +55,20 @@ Curve info
             </tr>
             </tbody>
         </table>
-        <div>
+    </div>
+    <br>
+    <div class="col-md-14">
+        <div class="card card-body">
             <p class="mb-0">comment : {{curve_info.comment}}</p>
         </div>
     </div>
-    <div class="col-md-4">
-        <div id = "container" style = "width: 600px; height: 200px; margin: 0 auto">
+    </div>
+    <div class="col-md-6">
+        <div class="card card-body">
+        <div>
+            <p class="mb-0"><h5>{{curve_info.name}} graph</h5></p>
+        </div>
+        <div id = "container" style = "width: 500px; height: 400px; margin: 0 auto">
               <script language = "JavaScript">
                  function drawChart() {
                     // Define the chart to be drawn.
@@ -74,8 +88,8 @@ Curve info
                           title: ' Strain Amplitude [ uE ] ',
                           scaleType: 'log',
                        },
-                       'width':600,
-                       'height':500,
+                       'width':500,
+                       'height':400,
                        curveType: 'function'
                     };
 
@@ -88,8 +102,8 @@ Curve info
         </div>
     </div>
   </div>
+  </div>
 </div>
 <br>
-<hr class="mt-0 mb-4">
-<input type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
+<input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
 {% endblock %}
