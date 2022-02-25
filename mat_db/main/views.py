@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
+from .forms import MaterialForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter
@@ -112,3 +113,38 @@ def curve_info(response, material_type_id, material_id, curve_name):
         })
     else:
         return HttpResponse("chyba")
+
+
+def create_material(response, material_type_id):
+    form = MaterialForm()
+    if response.method == "POST":
+        form = MaterialForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
+            model = Material(**cleaned_data)
+            model.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_material(response, material_type_id, material_id):
+    material_info = Material.objects.get(pk=material_id)
+    form = MaterialForm(instance=material_info)
+    if response.method == "POST":
+        form = MaterialForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_material(response, material_type_id, material_id):
+    material_info = Material.objects.get(pk=material_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('/material_type_list/%s' % material_type_id)
+    context = {"material_type_id":material_type_id, "material_info":material_info}
+    return render(response, "main/delete_form.html", context)

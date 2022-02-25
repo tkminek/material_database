@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% block title %}
+Create
+{% endblock %}
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <a href="{%url 'material_list' material_type_id %}">Cancel</a>
+    <input type="submit" name="Submit">
+</form>
+
+{% endblock %}
