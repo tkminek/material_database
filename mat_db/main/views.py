@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
-from .forms import MaterialForm
+from .forms import MaterialForm, HoseForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter
@@ -50,8 +50,14 @@ def material_info(response, material_type_id, material_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     if len(material_type.hose_set.all()) != 0:
         hose_info = Hose.objects.get(pk=material_id)
-        hose_static_info = HoseStatic.objects.get(hose_id=material_id)
-        hose_dynamic_info = HoseDynamic.objects.get(hose_id=material_id)
+        if HoseStatic.objects.filter(hose_id=material_id).exists():
+            hose_static_info = HoseStatic.objects.get(hose_id=material_id)
+        else:
+            hose_static_info = ""
+        if HoseDynamic.objects.filter(hose_id=material_id).exists():
+            hose_dynamic_info = HoseDynamic.objects.get(hose_id=material_id)
+        else:
+            hose_dynamic_info =""
         return render(response, "main/hose_info.html", {
             "material_type": material_type,
             "hose_info": hose_info,
@@ -115,6 +121,7 @@ def curve_info(response, material_type_id, material_id, curve_name):
         return HttpResponse("chyba")
 
 
+###   CREATE/ADD/EDIT MATERIAL   ###
 def create_material(response, material_type_id):
     form = MaterialForm()
     if response.method == "POST":
@@ -148,3 +155,55 @@ def delete_material(response, material_type_id, material_id):
         return redirect('/material_type_list/%s' % material_type_id)
     context = {"material_type_id":material_type_id, "material_info":material_info}
     return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT HOSE   ###
+def create_hose(response, material_type_id):
+    form = HoseForm()
+    if response.method == "POST":
+        form = HoseForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
+            #basic properties#
+            hose_keys = ["name", "type", "material_type_id"]
+            hose_dict = {x: cleaned_data[x] for x in cleaned_data if x in hose_keys}
+            hose_model = Hose(**hose_dict)
+            hose_model.save()
+            cleaned_data["hose_id"] = Hose.objects.get(pk=hose_model.id)
+
+            #static properties#
+            static_keys = ["s_E_min40", "s_E_plus23", "s_E_plus100", "s_nu_min40", "s_nu_plus23", "s_nu_plus100", "s_comment", "hose_id"]
+            static_dict = {x: cleaned_data[x] for x in cleaned_data if x in static_keys}
+            static_dict_new={}
+            static_dict_new["E_min40"]=static_dict["s_E_min40"]
+            static_dict_new["E_plus23"] = static_dict["s_E_plus23"]
+            static_dict_new["E_plus100"] = static_dict["s_E_plus100"]
+            static_dict_new["nu_min40"]=static_dict["s_nu_min40"]
+            static_dict_new["nu_plus23"] = static_dict["s_nu_plus23"]
+            static_dict_new["nu_plus100"] = static_dict["s_nu_plus100"]
+            static_dict_new["comment"] = static_dict["s_comment"]
+            static_dict_new["hose_id"] = static_dict["hose_id"]
+            static_model = HoseStatic(**static_dict_new)
+            static_model.save()
+
+            #dynamic properties#
+            dynamic_keys = ["d_E_min40", "d_E_plus23", "d_E_plus100", "d_nu_min40", "d_nu_plus23", "d_nu_plus100", "d_comment", "hose_id"]
+            dynamic_dict = {x: cleaned_data[x] for x in cleaned_data if x in dynamic_keys}
+            dynamic_dict_new={}
+            dynamic_dict_new["E_min40"]=dynamic_dict["d_E_min40"]
+            dynamic_dict_new["E_plus23"] = dynamic_dict["d_E_plus23"]
+            dynamic_dict_new["E_plus100"] = dynamic_dict["d_E_plus100"]
+            dynamic_dict_new["nu_min40"]=dynamic_dict["d_nu_min40"]
+            dynamic_dict_new["nu_plus23"] = dynamic_dict["d_nu_plus23"]
+            dynamic_dict_new["nu_plus100"] = dynamic_dict["d_nu_plus100"]
+            dynamic_dict_new["comment"] = dynamic_dict["d_comment"]
+            dynamic_dict_new["hose_id"] = dynamic_dict["hose_id"]
+            dynamic_model = HoseDynamic(**dynamic_dict_new)
+            dynamic_model.save()
+
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+

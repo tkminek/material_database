@@ -12,4 +12,5 @@ urlpatterns = [
     path('material_type_list/<int:material_type_id>/create_material/', views.create_material, name="create_material"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/update_material/', views.update_material, name="update_material"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/delete_material/', views.delete_material, name="delete_material"),
+    path('material_type_list/<int:material_type_id>/create_hose/', views.create_hose, name="create_hose"),
 ]
