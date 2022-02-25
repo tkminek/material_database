@@ -78,30 +78,28 @@ class Hose(models.Model):
 
 
 class HoseStatic(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    E_min40 = models.FloatField()
-    E_plus23 = models.FloatField()
-    E_plus100 = models.FloatField()
-    nu_min40 = models.FloatField(default=0.495)
-    nu_plus23 = models.FloatField(default=0.495)
-    nu_plus100 = models.FloatField(default=0.495)
-    comment = models.CharField(max_length=1000)
-    hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
+    Stat_E_min40 = models.FloatField()
+    Stat_E_plus23 = models.FloatField()
+    Stat_E_plus100 = models.FloatField()
+    Stat_nu_min40 = models.FloatField(default=0.495)
+    Stat_nu_plus23 = models.FloatField(default=0.495)
+    Stat_nu_plus100 = models.FloatField(default=0.495)
+    Stat_comment = models.CharField(max_length=1000)
+    Stat_hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
 
 class HoseDynamic(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    E_min40 = models.FloatField()
-    E_plus23 = models.FloatField()
-    E_plus100 = models.FloatField()
-    nu_min40 = models.FloatField(default=0.495)
-    nu_plus23 = models.FloatField(default=0.495)
-    nu_plus100 = models.FloatField(default=0.495)
-    comment = models.CharField(max_length=1000)
-    hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
+    Dyn_E_min40 = models.FloatField()
+    Dyn_E_plus23 = models.FloatField()
+    Dyn_E_plus100 = models.FloatField()
+    Dyn_nu_min40 = models.FloatField(default=0.495)
+    Dyn_nu_plus23 = models.FloatField(default=0.495)
+    Dyn_nu_plus100 = models.FloatField(default=0.495)
+    Dyn_comment = models.CharField(max_length=1000)
+    Dyn_hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

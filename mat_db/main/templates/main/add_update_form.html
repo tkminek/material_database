@@ -6,6 +6,8 @@ Create
 <form action="" method="POST">
     {% csrf_token %}
     {{form.as_p}}
+    {{form_s.as_p}}
+    {{form_d.as_p}}
     <a href="{%url 'material_list' material_type_id %}">Cancel</a>
     <input type="submit" name="Submit">
 </form>

@@ -15,7 +15,7 @@ Hose info
   <div class="row">
     <div class="col-md-6">
     <div class="card card-body">
-        <h3 class="mt-2">{{hose_static_info.name}}</h3>
+        <h3 class="mt-2">Static</h3>
         <br>
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -35,16 +35,16 @@ Hose info
             <tr>
                 <th class="text-center align-middle" scope="row">Young's modulus</th>
                 <th class="text-center align-middle" scope="row">E [MPa]</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.E_min40}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.E_plus23}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.E_plus100}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_E_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_E_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_E_plus100}}</th>
              </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Poisson's ratio</th>
                 <th class="text-center align-middle" scope="row">μ [-]</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_min40}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_plus23}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_static_info.nu_plus100}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_nu_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_nu_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_static_info.Stat_nu_plus100}}</th>
             </tr>
             </tbody>
         </table>
@@ -52,7 +52,7 @@ Hose info
     </div>
     <div class="col-md-6 offset-md-0">
     <div class="card card-body">
-        <h3 class="mt-2">{{hose_dynamic_info.name}}</h3>
+        <h3 class="mt-2">Dynamic</h3>
         <br>
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -72,16 +72,16 @@ Hose info
             <tr>
                 <th class="text-center align-middle" scope="row">Young's modulus</th>
                 <th class="text-center align-middle" scope="row">E [MPa]</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_min40}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_plus23}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.E_plus100}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_E_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_E_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_E_plus100}}</th>
              </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Poisson's ratio</th>
                 <th class="text-center align-middle" scope="row">μ [-]</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_min40}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_plus23}}</th>
-                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.nu_plus100}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_nu_min40}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_nu_plus23}}</th>
+                <th class="text-center align-middle" scope="row">{{hose_dynamic_info.Dyn_nu_plus100}}</th>
             </tr>
             </tbody>
         </table>
@@ -92,12 +92,12 @@ Hose info
   <div class="row">
       <div class="col-md-6">
           <div class="card card-body">
-            <p class="mb-0">comment : {{hose_static_info.comment}}</p>
+            <p class="mb-0">comment : {{hose_static_info.Stat_comment}}</p>
           </div>
       </div>
       <div class="col-md-6">
           <div class="card card-body">
-            <p class="mb-0">comment : {{hose_static_info.comment}}</p>
+            <p class="mb-0">comment : {{hose_dynamic_info.Dyn_comment}}</p>
           </div>
       </div>
   </div>

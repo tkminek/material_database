@@ -29,8 +29,8 @@ Material list
                  <a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
              </td>
              <td class="text-center align-middle">
-               <div class="btn btn-info" href="">Edit</div>
-               <div class="btn btn-danger" href="">Delete</div>
+               <a class="btn btn-info" href="{%url 'update_hose' material_type.id item.id%}">Edit</a>
+               <a class="btn btn-danger" href="{%url 'delete_hose' material_type.id item.id%}">Delete</a>
              </td>
          </tr>
          {% empty %}

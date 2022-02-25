@@ -13,4 +13,6 @@ urlpatterns = [
     path('material_type_list/<int:material_type_id>/<int:material_id>/update_material/', views.update_material, name="update_material"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/delete_material/', views.delete_material, name="delete_material"),
     path('material_type_list/<int:material_type_id>/create_hose/', views.create_hose, name="create_hose"),
+    path('material_type_list/<int:material_type_id>/<int:hose_id>/update_hose/', views.update_hose, name="update_hose"),
+    path('material_type_list/<int:material_type_id>/<int:hose_id>/delete_hose/', views.delete_hose, name="delete_hose"),
 ]

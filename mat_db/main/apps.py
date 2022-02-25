@@ -49,3 +49,4 @@ class Graph:
             ea = sa / e + (sa / k) ** (1 / n)
             data.append([ea, sa])
         return data
+
