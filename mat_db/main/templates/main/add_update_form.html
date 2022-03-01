@@ -3,13 +3,34 @@
 Create
 {% endblock %}
 {% block content %}
-<form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    {{form_s.as_p}}
-    {{form_d.as_p}}
-    <a href="{%url 'material_list' material_type_id %}">Cancel</a>
-    <input type="submit" name="Submit">
-</form>
+<br/><br/>
+<div class="form-group">
+    <form action="" method="POST">
+        <div class="row">
+            {% csrf_token %}
+            {{form.as_table}}
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col">
+                {{form_s.as_table}}
+            </div>
+            <div class="col">
+                {{form_d.as_table}}
+            </div>
+        </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col">
+                    <table>
+                        <td><button class="btn btn-success">Post</button></td>
+                        <td><input class="btn btn-warning" type=button value="Previous Page" onClick="javascript:history.go(-1);"></td>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 {% endblock %}

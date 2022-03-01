@@ -18,7 +18,8 @@ Material list
    <table class="table table-striped">
      <thead class="thead-dark">
      <tr>
-         <th class="text-center align-middle" scope="col">Material </th>
+         <th class="text-center align-middle" scope="col">Material</th>
+         <th class="text-center align-middle" scope="col">Type</th>
          <th class="text-center align-middle" scope="col">Action</th>
      </tr>
      </thead>
@@ -28,6 +29,7 @@ Material list
              <td class="text-center align-middle">
                  <a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
              </td>
+             <td class="text-center align-middle"><h5>{{item.type}}</h5></td>
              <td class="text-center align-middle">
                <a class="btn btn-info" href="{%url 'update_hose' material_type.id item.id%}">Edit</a>
                <a class="btn btn-danger" href="{%url 'delete_hose' material_type.id item.id%}">Delete</a>
@@ -44,5 +46,5 @@ Material list
     <a class="btn btn-success " href="{%url 'create_hose' material_type.id %}">Add material</a>
 </div>
 <br>
-<a class="btn btn-primary" href="/material_type_list" role="button">Back to material type</a>
+<a class="btn btn-warning" href="/material_type_list" role="button">Back to material type</a>
 {% endblock %}

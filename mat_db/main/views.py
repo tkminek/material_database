@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter
@@ -82,7 +82,7 @@ def curve_info(response, material_type_id, material_id, curve_name):
     material_type = MaterialType.objects.get(pk=material_type_id)
     material_info = Material.objects.get(pk=material_id)
     if CyclicCurve.objects.filter(name=curve_name).exists():
-        curve_info = CyclicCurve.objects.get(material_id=material_id)
+        curve_info = CyclicCurve.objects.get(name=curve_name)
         data=Graph().cyclic_curve(curve_info, Material.objects.get(pk=material_id).E)
         return render(response, "main/cyclic_curve.html", {
             "material_type": material_type,
@@ -91,7 +91,7 @@ def curve_info(response, material_type_id, material_id, curve_name):
             "data": data,
         })
     elif EnCurve.objects.filter(name=curve_name).exists():
-        curve_info = EnCurve.objects.get(material_id=material_id)
+        curve_info = EnCurve.objects.get(name=curve_name)
         data = Graph().en_curve(curve_info, Material.objects.get(pk=material_id).E)
         return render(response, "main/en_curve.html", {
             "material_type": material_type,
@@ -100,7 +100,7 @@ def curve_info(response, material_type_id, material_id, curve_name):
             "data": data,
         })
     elif SnCurve.objects.filter(name=curve_name).exists():
-        curve_info = SnCurve.objects.get(material_id=material_id)
+        curve_info = SnCurve.objects.get(name=curve_name)
         data = Graph().sn_curve(curve_info)
         return render(response, "main/sn_curve.html", {
             "material_type": material_type,
@@ -109,7 +109,7 @@ def curve_info(response, material_type_id, material_id, curve_name):
             "data": data,
         })
     elif StaticCurve.objects.filter(name=curve_name).exists():
-        curve_info = StaticCurve.objects.get(material_id=material_id)
+        curve_info = StaticCurve.objects.get(name=curve_name)
         data = Graph().static_curve(curve_info, Material.objects.get(pk=material_id).E)
         return render(response, "main/static_curve.html", {
             "material_type": material_type,
@@ -185,8 +185,6 @@ def create_hose(response, material_type_id):
             hose_model_d = HoseDynamic(**cleaned_data_d)
             hose_model_d.save()
 
-
-
             return redirect('/material_type_list/%s' % material_type_id)
     context = {"form": form, "form_s": form_s, "form_d": form_d, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
@@ -221,3 +219,122 @@ def delete_hose(response, material_type_id, hose_id):
     context = {"material_type_id": material_type_id, "material_info": hose_info}
     return render(response, "main/delete_form.html", context)
 
+
+###   CREATE/ADD/EDIT CURVE STATIC   ###
+def create_static_curve(response, material_type_id, material_id):
+    form = StaticCurveForm()
+    if response.method == "POST":
+        form = StaticCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_id"] = Material.objects.get(pk=material_id)
+            static_model = StaticCurve(**cleaned_data)
+            static_model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_cyclic_curve(response, material_type_id, material_id):
+    form = CyclicCurveForm()
+    if response.method == "POST":
+        form = CyclicCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_id"] = Material.objects.get(pk=material_id)
+            cyclic_model = CyclicCurve(**cleaned_data)
+            cyclic_model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_en_curve(response, material_type_id, material_id):
+    form = EnCurveForm()
+    if response.method == "POST":
+        form = EnCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_id"] = Material.objects.get(pk=material_id)
+            en_model = EnCurve(**cleaned_data)
+            en_model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_sn_curve(response, material_type_id, material_id):
+    form = SnCurveForm()
+    if response.method == "POST":
+        form = SnCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_id"] = Material.objects.get(pk=material_id)
+            sn_model = SnCurve(**cleaned_data)
+            sn_model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_curve(response, material_type_id, material_id, curve_name):
+    if StaticCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = StaticCurve.objects.get(name=curve_name)
+        form = StaticCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = StaticCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif CyclicCurve.objects.filter(name=curve_name).exists():
+        curve_info_c = CyclicCurve.objects.get(name=curve_name)
+        form = StaticCurveForm(instance=curve_info_c)
+        if response.method == "POST":
+            form = CyclicCurveForm(response.POST, instance=curve_info_c)
+            if form.is_valid():
+                form.save()
+                return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif EnCurve.objects.filter(name=curve_name).exists():
+        curve_info_e = EnCurve.objects.get(name=curve_name)
+        form = EnCurveForm(instance=curve_info_e)
+        if response.method == "POST":
+            form = EnCurveForm(response.POST, instance=curve_info_e)
+            if form.is_valid():
+                form.save()
+                return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif SnCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = SnCurve.objects.get(name=curve_name)
+        form = SnCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = SnCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_curve(response, material_type_id, material_id, curve_name):
+    material_info = {"name":curve_name}
+    if StaticCurve.objects.filter(name=curve_name).exists():
+        curve_info = StaticCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif CyclicCurve.objects.filter(name=curve_name).exists():
+        curve_info = CyclicCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif EnCurve.objects.filter(name=curve_name).exists():
+        curve_info = EnCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif SnCurve.objects.filter(name=curve_name).exists():
+        curve_info = SnCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"material_type_id": material_type_id, "material_id": material_id, "material_info": material_info }
+    return render(response, "main/delete_form.html", context)

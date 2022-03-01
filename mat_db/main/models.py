@@ -23,6 +23,7 @@ class Material(models.Model):
 
 
 class CyclicCurve(models.Model):
+    curve_type = "Cyclic curve"
     name = models.CharField(max_length=200, unique=True)
     K = models.FloatField(max_length=200)
     n = models.FloatField(max_length=200)
@@ -34,6 +35,7 @@ class CyclicCurve(models.Model):
 
 
 class StaticCurve(models.Model):
+    curve_type = "Static curve"
     name = models.CharField(max_length=200, unique=True)
     K = models.FloatField(max_length=200)
     n = models.FloatField(max_length=200)
@@ -45,6 +47,7 @@ class StaticCurve(models.Model):
 
 
 class EnCurve(models.Model):
+    curve_type = "En curve"
     name = models.CharField(max_length=200, unique=True)
     Sf = models.FloatField()
     b = models.FloatField()
@@ -58,6 +61,7 @@ class EnCurve(models.Model):
 
 
 class SnCurve(models.Model):
+    curve_type = "Sn curve"
     name = models.CharField(max_length=200, unique=True)
     Sa = models.CharField(max_length=20000)
     Nf = models.CharField(max_length=20000)
@@ -68,9 +72,15 @@ class SnCurve(models.Model):
         return self.name
 
 
+HOSE_CHOICES = (
+    ("GOODYER", "Goodyer"),
+    ("ARCTIC NK", "Arctic NK"),
+)
+
+
 class Hose(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    type = models.CharField(max_length=200)
+    type = models.CharField(max_length=200, choices=HOSE_CHOICES)
     material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
 
     def __str__(self):

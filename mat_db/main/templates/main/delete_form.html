@@ -3,10 +3,19 @@
 Delete
 {% endblock %}
 {% block content %}
-<h1> Are you sure you want to delete "{{ material_info }}?"</h1>
+<br/><br/>
+<h3> Are you sure you want to delete "{{ material_info.name }}?"</h3>
+<br/><br/>
 <form action="" method="POST">
     {% csrf_token %}
-    <a href="{%url 'material_list' material_type_id %}">Cancel</a>
-    <input type="submit" name="Confirm">
+    <div class="col">
+        <table>
+            <td><button class="btn btn-danger">Delete</button></td>
+            <td>
+                <input class="btn btn-warning" type=button value="Previous Page" onClick="javascript:history.go(-1);"></td>
+            </td>
+        </table>
+    </div>
+
 </form>
 {% endblock %}
