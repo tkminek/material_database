@@ -14,7 +14,10 @@ class Graph:
         data = []
         for sa in range(0, 1000, 10):
             ea = sa/e+(sa/k)**(1/n)
-            data.append([ea, sa])
+            if ea >= 0.5:
+                break
+            else:
+                data.append([ea, sa])
         return data
 
     @staticmethod
@@ -47,6 +50,8 @@ class Graph:
         data = []
         for sa in range(0, 1000, 10):
             ea = sa / e + (sa / k) ** (1 / n)
+            if ea >= 0.5:
+                break
             data.append([ea, sa])
         return data
 

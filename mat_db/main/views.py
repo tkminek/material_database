@@ -4,7 +4,7 @@ from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, Stati
 from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm
 from itertools import chain
 from .apps import Graph
-from . filters import MaterialFilter
+from . filters import MaterialFilter, HoseFilter
 
 
 def home(response):
@@ -28,7 +28,7 @@ def material_list(response, material_type_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     if len(material_type.hose_set.all()) != 0:
         hose_ls = Hose.objects.filter(material_type_id=material_type_id)
-        my_filter = MaterialFilter(response.GET, queryset=hose_ls)
+        my_filter = HoseFilter(response.GET, queryset=hose_ls)
         hose_ls = my_filter.qs
         return render(response, "main/hose_list.html", {
             "hose_ls": hose_ls,

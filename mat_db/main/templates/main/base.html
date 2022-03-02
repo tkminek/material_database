@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="shortcut icon" href="{% static 'main/images/hanon.png'  %}" />
+    <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
     <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
     <script type = "text/javascript">
         google.charts.load('current', {packages: ['corechart','line']});
@@ -18,6 +19,7 @@
     </title>
 </head>
 <body>
+<div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class =container>
               <img src="{% static 'main/images/hanon.png' %}" width="70" height="70" alt="">
@@ -45,14 +47,111 @@
           </div>
       </div>
     </nav>
-    <div class="container">
+</div>
+<div class="container">
     {% block content %}
     {% endblock %}
-    </div>
+</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark">
+
+  <div style="background-color: white;">
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row py-4 d-flex align-items-center">
+
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+
+
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left mt-5">
+
+    <!-- Grid row -->
+    <div class="row mt-3 bg-light" >
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-4 col-xl-4 mx-auto mb-4">
+
+        <!-- Content -->
+        <br>
+        <h6 class="text-uppercase font-weight-bold">Hanon systems</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 150px;">
+        <p>Hanon Systems aspires to be a leader in innovative thermal and energy management solutions and is steadfast in its commitment to create sustainable long-term success.</p>
+
+      </div>
+
+
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-2 col-xl-3 mx-auto mb-4">
+
+        <!-- Links -->
+        <br>
+        <h6 class="text-uppercase font-weight-bold">Links</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <a href="http://www.autopal.visteon.com/" style="color:black">Czech Hanon Domain</a>
+        </p>
+        <p>
+          <a href="http://portal.hanonsystems.com/" style="color:black">Global Hanon Portal</a>
+        </p>
+
+
+      </div>
+
+
+      <!-- Grid column -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+        <!-- Links -->
+        <br>
+        <h6 class="text-uppercase font-weight-bold">Contact</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 100px;">
+        <p>
+          <i class="iconify mr-3" data-icon="wpf:name"></i> Hanon Systems Autopal s.r.o.</p>
+        <p>
+          <i class="iconify mr-3" data-icon="carbon:location-filled"></i>Lužická 984/14, Nový Jičín</p>
+        <p>
+          <i class="iconify mr-3" data-icon="emojione-v1:black-touch-tone-telephone"></i> + 420 xxx xxx xxx</p>
+        <p>
+          <i class="iconify mr-3" data-icon="clarity:email-solid"></i>www.xxx@xxx.com</p>
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">Copyright © 2022. All Rights Reserved.
+    <p>Created by CAE Team Hanon Systems Czech</p>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
  </body>
 </html>

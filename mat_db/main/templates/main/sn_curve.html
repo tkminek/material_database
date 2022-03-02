@@ -17,8 +17,8 @@ Curve info
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th class="text-center align-middle" scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
                 <th class="text-center align-middle" scope="col">Number of cycles:<br> Nf [-]</th>
+                <th class="text-center align-middle" scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
             </tr>
             </thead>
             <tbody>
@@ -73,5 +73,7 @@ Curve info
 </div>
 <br>
 <hr class="mt-0 mb-4">
-<input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
+<div class="container">
+    <input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
+</div>
 {% endblock %}
