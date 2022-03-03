@@ -73,8 +73,8 @@ class SnCurve(models.Model):
 
 
 HOSE_CHOICES = (
-    ("GOODYER", "Goodyer"),
-    ("ARCTIC NK", "Arctic NK"),
+    (" Conti ", " Conti "),
+    (" Maflow ", " Maflow "),
 )
 
 

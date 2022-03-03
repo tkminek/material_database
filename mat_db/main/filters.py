@@ -5,8 +5,8 @@ from .models import Material, Hose
 class HoseFilter(django_filters.FilterSet):
 
     HOSE_CHOICES = (
-        ("GOODYER", "Goodyer"),
-        ("ARCTIC NK", "Arctic NK"),
+        (" Conti ", " Conti "),
+        (" Maflow ", " Maflow "),
     )
 
     type = django_filters.ChoiceFilter(label="Hose type",choices=HOSE_CHOICES)
