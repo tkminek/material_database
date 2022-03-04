@@ -86,10 +86,17 @@ Material info
                      <a class="btn btn-outline-dark btn-sm" href="{%url 'curve_info' material_type.id material_info.id item.name%}">{{item.name}}</a>
                  </td>
                  <td class="text-center align-middle">{{item.curve_type}}</td>
+                 {% if user.is_authenticated %}
                  <td class="text-center align-middle">
                    <a class="btn btn-info" href="{%url 'update_curve' material_type.id material_info.id item.name%}">Edit</a>
                    <a class="btn btn-danger" href="{%url 'delete_curve' material_type.id material_info.id item.name%}">Delete</a>
                  </td>
+                 {% else %}
+                 <td class="text-center align-middle">
+                   <a class="btn btn-info disabled" href="{%url 'update_curve' material_type.id material_info.id item.name%}">Edit</a>
+                   <a class="btn btn-danger disabled" href="{%url 'delete_curve' material_type.id material_info.id item.name%}">Delete</a>
+                 </td>
+                 {% endif %}
              </tr>
              {% empty %}
              <h5>Sorry no available data</h5>
@@ -101,6 +108,7 @@ Material info
     <br>
     <div class="col-md-14">
         <div class="card card-body">
+            {% if user.is_authenticated %}
             <table>
                 <td class="text-center align-middle">
                     <a class="btn btn-success " href="{%url 'create_static_curve' material_type.id material_info.id %}">Add static curve</a>
@@ -113,6 +121,20 @@ Material info
                     <a class="btn btn-success " href="{%url 'create_sn_curve' material_type.id material_info.id %}">Add Sn curve</a>
                 </td>
             </table>
+            {% else %}
+            <table>
+                <td class="text-center align-middle">
+                    <a class="btn btn-success disabled" href="{%url 'create_static_curve' material_type.id material_info.id %}">Add static curve</a>
+                    <h1></h1>
+                    <a class="btn btn-success disabled" href="{%url 'create_cyclic_curve' material_type.id material_info.id %}">Add cyclic curve</a>
+                </td>
+                <td class="text-center align-middle">
+                    <a class="btn btn-success disabled" href="{%url 'create_en_curve' material_type.id material_info.id %}">Add En curve</a>
+                    <h1></h1>
+                    <a class="btn btn-success disabled" href="{%url 'create_sn_curve' material_type.id material_info.id %}">Add Sn curve</a>
+                </td>
+            </table>
+            {% endif %}
         </div>
     </div>
   </div>
