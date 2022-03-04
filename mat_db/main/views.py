@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, PlasticInfo
 from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm
 from itertools import chain
 from .apps import Graph
-from . filters import MaterialFilter, HoseFilter
+from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter
 
 
 def home(response):
@@ -16,9 +16,12 @@ def material_type_list(response):
     count_ls = {}
     for mat_type in mat_type_ls:
         mat_id = mat_type.id
-        count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
-        if Material.objects.filter(material_type_id=mat_id).count() == 0:
+        if Material.objects.filter(material_type_id=mat_id).count() != 0:
+            count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
+        elif Hose.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
+        elif Plastic.objects.filter(material_type_id=mat_id).count() != 0:
+            count_ls[mat_type] = Plastic.objects.filter(material_type_id=mat_id).count()
     return render(response, "main/material_type_list.html", {
                       "count_ls": count_ls,
                    })
@@ -35,8 +38,17 @@ def material_list(response, material_type_id):
             "material_type": material_type,
             "my_filter": my_filter,
         })
-    else:
+    elif len(material_type.material_set.all()) != 0:
         material_ls = Material.objects.filter(material_type_id=material_type_id)
+        my_filter = MaterialFilter(response.GET, queryset=material_ls)
+        material_ls = my_filter.qs
+        return render(response, "main/material_list.html", {
+            "material_ls": material_ls,
+            "material_type": material_type,
+            "my_filter": my_filter,
+            })
+    elif len(material_type.plastic_set.all()) != 0:
+        material_ls = Plastic.objects.filter(material_type_id=material_type_id)
         my_filter = MaterialFilter(response.GET, queryset=material_ls)
         material_ls = my_filter.qs
         return render(response, "main/material_list.html", {
@@ -64,7 +76,7 @@ def material_info(response, material_type_id, material_id):
             "hose_static_info": hose_static_info,
             "hose_dynamic_info": hose_dynamic_info,
         })
-    else:
+    elif len(material_type.material_set.all()) != 0:
         material_info = Material.objects.get(pk=material_id)
         c_curve=CyclicCurve.objects.filter(material_id=material_id)
         en_curve = EnCurve.objects.filter(material_id=material_id)
@@ -75,6 +87,17 @@ def material_info(response, material_type_id, material_id):
             "material_type": material_type,
             "material_info": material_info,
             "curve_ls": curve_ls,
+        })
+    elif len(material_type.plastic_set.all()) != 0:
+        material_info = Plastic.objects.get(pk=material_id)
+        water_ls = WaterContent.objects.filter(plastic_id=material_id)
+        my_filter = WaterFilter(response.GET, queryset=water_ls)
+        water_ls = my_filter.qs
+        return render(response, "main/water_list.html", {
+            "material_info": material_info,
+            "material_type": material_type,
+            "water_ls": water_ls,
+            "my_filter": my_filter,
         })
 
 
@@ -338,3 +361,36 @@ def delete_curve(response, material_type_id, material_id, curve_name):
             return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
     context = {"material_type_id": material_type_id, "material_id": material_id, "material_info": material_info }
     return render(response, "main/delete_form.html", context)
+
+
+def temperature_list(response, material_type_id, plastic_id, water_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_ls = Temperature.objects.filter(water_content_id=water_id)
+    my_filter = TempFilter(response.GET, queryset=temp_ls)
+    temp_ls = my_filter.qs
+    return render(response, "main/temp_list.html", {
+        "material_type": material_type,
+        "material_info": material_info,
+        "water_info": water_info,
+        "water_ls": temp_ls,
+        "my_filter": my_filter,
+    })
+
+
+def fibre_list(response, material_type_id, plastic_id, water_id, fibre_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_ls = Temperature.objects.filter(water_content_id=water_id)
+    my_filter = TempFilter(response.GET, queryset=temp_ls)
+    temp_ls = my_filter.qs
+    return render(response, "main/temp_list.html", {
+        "material_type": material_type,
+        "material_info": material_info,
+        "water_info": water_info,
+        "water_ls": temp_ls,
+        "my_filter": my_filter,
+    })
+

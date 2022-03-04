@@ -20,4 +20,6 @@ urlpatterns = [
     path('material_type_list/<int:material_type_id>/<int:material_id>/create_sn_curve/', views.create_sn_curve, name="create_sn_curve"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>/update_curve/', views.update_curve, name="update_curve"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>/delete_curve/', views.delete_curve, name="delete_curve"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/', views.temperature_list, name="temperature_list"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:fibre_id>', views.fibre_list, name="fibre_list"),
 ]

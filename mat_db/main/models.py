@@ -113,3 +113,49 @@ class HoseDynamic(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Plastic(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class WaterContent(models.Model):
+    name = models.CharField(max_length=200)
+    plastic_id = models.ForeignKey(Plastic, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Temperature(models.Model):
+    name = models.CharField(max_length=200)
+    water_content_id = models.ForeignKey(WaterContent, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class FibreOrientation(models.Model):
+    name = models.CharField(max_length=200)
+    fibre_orientation_id = models.ForeignKey(Temperature, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class PlasticInfo(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    E = models.FloatField()
+    nu = models.FloatField(blank=True)
+    Rm = models.FloatField(blank=True)
+    Re = models.FloatField(blank=True)
+    Ru = models.FloatField(blank=True)
+    comment = models.CharField(max_length=1000)
+    temperature_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

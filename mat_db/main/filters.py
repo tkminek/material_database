@@ -1,5 +1,5 @@
 import django_filters
-from .models import Material, Hose
+from .models import Material, Hose, WaterContent, Temperature
 
 
 class HoseFilter(django_filters.FilterSet):
@@ -17,6 +17,7 @@ class HoseFilter(django_filters.FilterSet):
             "name": [ "icontains" ],
         }
 
+
 class MaterialFilter(django_filters.FilterSet):
 
     class Meta:
@@ -25,3 +26,20 @@ class MaterialFilter(django_filters.FilterSet):
             "name": [ "icontains" ],
         }
 
+
+class WaterFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = WaterContent
+        fields = {
+            "name": [ "icontains" ],
+        }
+
+
+class TempFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Temperature
+        fields = {
+            "name": [ "icontains" ],
+        }
