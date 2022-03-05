@@ -141,21 +141,33 @@ class Temperature(models.Model):
 
 class FibreOrientation(models.Model):
     name = models.CharField(max_length=200)
-    fibre_orientation_id = models.ForeignKey(Temperature, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class PlasticInfo(models.Model):
-    name = models.CharField(max_length=200, unique=True)
     E = models.FloatField()
     nu = models.FloatField(blank=True)
     Rm = models.FloatField(blank=True)
     Re = models.FloatField(blank=True)
     Ru = models.FloatField(blank=True)
-    comment = models.CharField(max_length=1000)
-    temperature_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
+    temperature_id = models.ForeignKey(Temperature, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+
+class FibreStaticCurve(models.Model):
+    curve_type = "Static curve"
+    name = models.CharField(max_length=200, unique=True)
+    K = models.FloatField(max_length=200)
+    n = models.FloatField(max_length=200)
+    comment = models.CharField(max_length=1000)
+    fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class FibreSnCurve(models.Model):
+    curve_type = "Sn curve"
+    name = models.CharField(max_length=200, unique=True)
+    Sa = models.CharField(max_length=20000)
+    Nf = models.CharField(max_length=20000)
+    comment = models.CharField(max_length=1000)
+    fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseStatic, HoseDynamic, Plastic, WaterContent, Temperature, PlasticInfo
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseStatic, HoseDynamic, Plastic,  WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
 # Register your models here.
 admin.site.register(MaterialType)
 admin.site.register(Material)
@@ -13,5 +13,9 @@ admin.site.register(HoseDynamic)
 admin.site.register(Plastic)
 admin.site.register(WaterContent)
 admin.site.register(Temperature)
-admin.site.register(PlasticInfo)
+admin.site.register(FibreOrientation)
+admin.site.register(FibreSnCurve)
+admin.site.register(FibreStaticCurve)
+
+
 

@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, PlasticInfo
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm
 from itertools import chain
 from .apps import Graph
-from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter
+from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter
 
 
 def home(response):
@@ -51,7 +51,7 @@ def material_list(response, material_type_id):
         material_ls = Plastic.objects.filter(material_type_id=material_type_id)
         my_filter = MaterialFilter(response.GET, queryset=material_ls)
         material_ls = my_filter.qs
-        return render(response, "main/material_list.html", {
+        return render(response, "main/plastic_list.html", {
             "material_ls": material_ls,
             "material_type": material_type,
             "my_filter": my_filter,
@@ -374,23 +374,113 @@ def temperature_list(response, material_type_id, plastic_id, water_id):
         "material_type": material_type,
         "material_info": material_info,
         "water_info": water_info,
-        "water_ls": temp_ls,
+        "temp_ls": temp_ls,
         "my_filter": my_filter,
     })
 
 
-def fibre_list(response, material_type_id, plastic_id, water_id, fibre_id):
+def fibre_list(response, material_type_id, plastic_id, water_id, temp_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     material_info = Plastic.objects.get(pk=plastic_id)
     water_info = WaterContent.objects.get(pk=water_id)
-    temp_ls = Temperature.objects.filter(water_content_id=water_id)
-    my_filter = TempFilter(response.GET, queryset=temp_ls)
-    temp_ls = my_filter.qs
-    return render(response, "main/temp_list.html", {
+    temp_info = Temperature.objects.get(pk=temp_id)
+    fibre_ls = FibreOrientation.objects.filter(temperature_id=temp_id)
+    my_filter = FibreFilter(response.GET, queryset=fibre_ls)
+    fibre_ls = my_filter.qs
+    return render(response, "main/fibre_list.html", {
         "material_type": material_type,
         "material_info": material_info,
         "water_info": water_info,
-        "water_ls": temp_ls,
+        "temp_info": temp_info,
+        "fibre_ls": fibre_ls,
         "my_filter": my_filter,
     })
 
+
+def fibre_info(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_info = Temperature.objects.get(pk=temp_id)
+    fibre_info = FibreOrientation.objects.get(pk=fibre_id)
+    sn_curve = FibreSnCurve.objects.filter(fibre_id=fibre_id)
+    s_curve = FibreStaticCurve.objects.filter(fibre_id=fibre_id)
+    curve_ls = list(chain(sn_curve, s_curve))
+    return render(response, "main/fibre_info.html", {
+        "material_type": material_type,
+        "material_info": material_info,
+        "water_info": water_info,
+        "temp_info": temp_info,
+        "fibre_info": fibre_info,
+        "curve_ls": curve_ls,
+    })
+
+
+def fibre_curve_info(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_info = Temperature.objects.get(pk=temp_id)
+    fibre_info = FibreOrientation.objects.get(pk=fibre_id)
+    if FibreSnCurve.objects.filter(name=curve_name).exists():
+        curve_info = FibreSnCurve.objects.get(name=curve_name)
+        data = Graph().sn_curve(curve_info)
+        return render(response, "main/sn_curve.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "water_info": water_info,
+            "temp_info": temp_info,
+            "fibre_info": fibre_info,
+            "curve_info": curve_info,
+            "data": data,
+        })
+    elif FibreStaticCurve.objects.filter(name=curve_name).exists():
+        curve_info = FibreStaticCurve.objects.get(name=curve_name)
+        data = Graph().static_curve(curve_info, FibreOrientation.objects.get(pk=fibre_id).E)
+        return render(response, "main/static_curve.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "water_info": water_info,
+            "temp_info": temp_info,
+            "fibre_info": fibre_info,
+            "curve_info": curve_info,
+            "data": data,
+        })
+    else:
+        return HttpResponse("chyba")
+
+
+###   CREATE/ADD/EDIT PLASTIC   ###
+def create_plastic(response, material_type_id):
+    form = PlasticForm()
+    if response.method == "POST":
+        form = PlasticForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
+            model = Plastic(**cleaned_data)
+            model.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_plastic(response, material_type_id, plastic_id):
+    material_info = Plastic.objects.get(pk=plastic_id)
+    form = PlasticForm(instance=material_info)
+    if response.method == "POST":
+        form = PlasticForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_plastic(response, material_type_id, plastic_id):
+    material_info = Plastic.objects.get(pk=plastic_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('/material_type_list/%s' % material_type_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)

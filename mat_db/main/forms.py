@@ -1,4 +1,4 @@
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic
 from django import forms
 
 
@@ -104,4 +104,14 @@ class SnCurveForm(forms.ModelForm):
             "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
             "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": "Number Of Cycles"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
+        }
+
+
+class PlasticForm(forms.ModelForm):
+    class Meta:
+        model = Plastic
+        exclude = ['material_type_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Material Name"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }

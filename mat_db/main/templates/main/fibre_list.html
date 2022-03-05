@@ -5,8 +5,9 @@ Material list
 
 {% block content %}
 <br>
-<h1 class="mt-2">{{material_info.name}}</h1>
+<h1 class="mt-2">{{material_info.name}}</h6>
 <h6 class="mt-2">Water content: {{water_info.name}}</h6>
+<h6 class="mt-2">Temperature: {{temp_info.name}}</h6>
 <hr class="mt-0 mb-4">
 <br>
 <div>
@@ -25,10 +26,10 @@ Material list
      </tr>
      </thead>
      <tbody>
-         {% for item in temp_ls %}
+         {% for item in fibre_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <a class="btn btn-outline-dark btn-lg" href="{%url 'fibre_list' material_type.id material_info.id water_info.id item.id%}" role="button">{{item.name}}</a>
+                 <a class="btn btn-outline-dark btn-lg" href="{%url 'fibre_info' material_type.id material_info.id water_info.id temp_info.id item.id%}" role="button">{{item.name}}</a>
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">
@@ -57,5 +58,5 @@ Material list
     {% endif %}
 </div>
 <br>
-<a class="btn btn-primary" href="{%url 'material_info' material_type.id material_info.id %}" role="button">Back to water content list</a>
+<a class="btn btn-primary" href="{%url 'temperature_list' material_type.id material_info.id water_info.id%}" role="button">Back to temperature list</a>
 {% endblock %}

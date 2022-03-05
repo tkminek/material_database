@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.home, name="home"),
     path('material_type_list/', views.material_type_list, name="material_type_list"),
-    path('material_type_list/<int:material_type_id>', views.material_list, name= "material_list"),
+    path('material_type_list/<int:material_type_id>/', views.material_list, name= "material_list"),
     path('material_type_list/<int:material_type_id>/<int:material_id>', views.material_info, name="material_info"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>', views.curve_info, name="curve_info"),
     path('material_type_list/<int:material_type_id>/create_material/', views.create_material, name="create_material"),
@@ -21,5 +21,10 @@ urlpatterns = [
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>/update_curve/', views.update_curve, name="update_curve"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>/delete_curve/', views.delete_curve, name="delete_curve"),
     path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/', views.temperature_list, name="temperature_list"),
-    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:fibre_id>', views.fibre_list, name="fibre_list"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/', views.fibre_list, name="fibre_list"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/', views.fibre_info, name="fibre_info"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/<str:curve_name>', views.fibre_curve_info, name="fibre_curve_info"),
+    path('material_type_list/<int:material_type_id>/create_plastic/', views.create_plastic, name="create_plastic"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/update_plastic/', views.update_plastic, name="update_plastic"),
+    path('material_type_list/<int:material_type_id>/<int:plastic_id>/delete_plstic/', views.delete_plastic, name="delete_plastic"),
 ]

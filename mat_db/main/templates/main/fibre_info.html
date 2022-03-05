@@ -1,0 +1,138 @@
+{% extends "main/base.html" %}
+{% block title %}
+Material info
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="mt-2">{{material_info.name}}</h1>
+        <h6 class="mt-2">Water content: {{water_info.name}}</h6>
+        <h6 class="mt-2">Temperature: {{temp_info.name}}</h6>
+        <h6 class="mt-2">Fibre info: {{fibre_info.name}}</h6>
+            <hr class="mt-0 mb-4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-7">
+    <div class="card card-body">
+        <h3 class="mt-2">Material properties</h3>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center align-middle" scope="col">Description</th>
+                <th class="text-center align-middle" scope="col">Physical property</th>
+                <th class="text-center align-middle" scope="col">Value</th>
+                <th class="text-center align-middle" scope="col">Unit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="text-center align-middle" scope="row">Young's modulus</th>
+                <th class="text-center align-middle" scope="row">E</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.E}}</th>
+                <th class="text-center align-middle" scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Poisson's ratio</th>
+                <th class="text-center align-middle" scope="row">μ</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.nu}}</th>
+                <th class="text-center align-middle" scope="row">-</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Ultimate tensile strength</th>
+                <th class="text-center align-middle" scope="row">Rm</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.Rm}}</th>
+                <th class="text-center align-middle" scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Yield stress</th>
+                <th class="text-center align-middle" scope="row">Re</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.Re}}</th>
+                <th class="text-center align-middle" scope="row">MPa</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Fatigue limit</th>
+                <th class="text-center align-middle" scope="row">Ru</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.Ru}}</th>
+                <th class="text-center align-middle" scope="row">MPa</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="col-md-14">
+        <div class="card card-body">
+            <p class="mb-0">comment : {{fibre_info.comment}}</p>
+        </div>
+    </div>
+    </div>
+    <div class="col-md-5 offset-md-0">
+    <div class="card card-body">
+      <h3 class="mt-2">Material curves</h3>
+      <br>
+      <table class="table table-striped">
+         <thead class="thead-dark">
+         <tr>
+             <th class="text-center align-middle" scope="col">Material</th>
+             <th class="text-center align-middle" scope="col">Type</th>
+             <th class="text-center align-middle" scope="col">Action</th>
+         </tr>
+         </thead>
+         <tbody>
+             {% for item in curve_ls %}
+             <tr>
+                 <td class="text-center align-middle">
+                     <a class="btn btn-outline-dark btn-sm" href="{%url 'fibre_curve_info' material_type.id material_info.id water_info.id temp_info.id fibre_info.id item.name %}">{{item.name}}</a>
+                 </td>
+                 <td class="text-center align-middle">{{item.curve_type}}</td>
+                 {% if user.is_authenticated %}
+                 <td class="text-center align-middle">
+                   <a class="btn btn-info" href="">Edit</a>
+                   <a class="btn btn-danger" href="">Delete</a>
+                 </td>
+                 {% else %}
+                 <td class="text-center align-middle">
+                   <a class="btn btn-info disabled" href="">Edit</a>
+                   <a class="btn btn-danger disabled" href="">Delete</a>
+                 </td>
+                 {% endif %}
+             </tr>
+             {% empty %}
+             <h5>Sorry no available data</h5>
+
+             {% endfor %}
+         </tbody>
+       </table>
+    </div>
+    <br>
+    <div class="col-md-14">
+        <div class="card card-body">
+            {% if user.is_authenticated %}
+            <table>
+                <td class="text-center align-middle">
+                    <a class="btn btn-success " href="">Add static curve</a>
+                    <a class="btn btn-success " href="">Add Sn curve</a>
+                </td>
+            </table>
+            {% else %}
+            <table>
+                <td class="text-center align-middle">
+                    <a class="btn btn-success disabled" href="">Add static curve</a>
+                    <a class="btn btn-success disabled" href="">Add Sn curve</a>
+                </td>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+<br>
+<div class="container">
+    <a class="btn btn-primary" href="{%url 'fibre_list' material_type.id material_info.id water_info.id temp_info.id%}">Back to fibre list</a>
+</div>
+{% endblock %}
