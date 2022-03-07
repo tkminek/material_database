@@ -6,7 +6,6 @@ Material list
 {% block content %}
 <br>
 <h1 class="mt-2">{{material_info.name}}</h1>
-<hr class="mt-0 mb-4">
 <br>
 <div>
    <form method="get">
@@ -31,13 +30,13 @@ Material list
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">
-               <div class="btn btn-info" href="">Edit</div>
-               <div class="btn btn-danger" href="">Delete</div>
+               <a class="btn btn-info" href="{%url 'update_water' material_type.id material_info.id item.id%}">Edit</a>
+               <a class="btn btn-danger" href="{%url 'delete_water' material_type.id material_info.id item.id%}">Delete</a>
              </td>
              {% else %}
              <td class="text-center align-middle">
-               <div class="btn btn-info disabled" href="">Edit</div>
-               <div class="btn btn-danger disabled" href="">Delete</div>
+               <a class="btn btn-info disabled" href="{%url 'update_water' material_type.id material_info.id item.id%}">Edit</a>
+               <a class="btn btn-danger disabled" href="{%url 'delete_water' material_type.id material_info.id item.id%}">Delete</a>
              </td>
              {% endif %}
          </tr>
@@ -50,9 +49,9 @@ Material list
 <br>
 <div class="card card-body">
     {% if user.is_authenticated %}
-    <div class="btn btn-success " href="">Add material</div>
+    <a class="btn btn-success " href="{%url 'create_water' material_type.id material_info.id%}">Add material</a>
     {% else %}
-    <div class="btn btn-success disabled" href="">Add material</div>
+    <a class="btn btn-success disabled" href="{%url 'create_water' material_type.id material_info.id%}">Add material</a>
     {% endif %}
 </div>
 <br>

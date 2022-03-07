@@ -143,9 +143,11 @@ class FibreOrientation(models.Model):
     name = models.CharField(max_length=200)
     E = models.FloatField()
     nu = models.FloatField(blank=True)
+    rho = models.FloatField(blank=True)
     Rm = models.FloatField(blank=True)
     Re = models.FloatField(blank=True)
     Ru = models.FloatField(blank=True)
+    comment = models.CharField(max_length=1000, default="")
     temperature_id = models.ForeignKey(Temperature, on_delete=models.CASCADE)
 
     def __str__(self):

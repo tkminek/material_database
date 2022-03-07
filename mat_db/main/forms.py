@@ -1,4 +1,4 @@
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
 from django import forms
 
 
@@ -102,7 +102,7 @@ class SnCurveForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
             "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
-            "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": "Number Of Cycles"}),
+            "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Number Of Cycles - Split By ","'}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
         }
 
@@ -114,4 +114,64 @@ class PlasticForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Material Name"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class WaterContentForm(forms.ModelForm):
+    class Meta:
+        model = WaterContent
+        exclude = ['plastic_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Humidity Name"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class TemperatureForm(forms.ModelForm):
+    class Meta:
+        model = Temperature
+        exclude = ['water_content_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Temperature Name"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class FibreOrientationForm(forms.ModelForm):
+    class Meta:
+        model = FibreOrientation
+        exclude = ['temperature_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Material Name"}),
+            "E": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Young's Modulus"}),
+            "nu": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Poisson's Ratio"}),
+            "rho": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Density"}),
+            "Rm": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Ultimate Tensile Strength"}),
+            "Re": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Yield Stress"}),
+            "Ru": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Fatigue Limit"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class FibreStaticCurveForm(forms.ModelForm):
+    class Meta:
+        model = FibreStaticCurve
+        exclude = ['fibre_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
+            "K": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Static Strain Hardening Coefficient"}),
+            "n": forms.TextInput(attrs={"class": "form-control", "placeholder": "Cyclic Static Hardening Exponent"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
+        }
+
+
+class FibreSnCurveForm(forms.ModelForm):
+    class Meta:
+        model = FibreSnCurve
+        exclude = ['fibre_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
+            "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
+            "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Number Of Cycles - Split By ","'}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
         }

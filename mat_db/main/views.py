@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter
@@ -483,4 +483,179 @@ def delete_plastic(response, material_type_id, plastic_id):
         material_info.delete()
         return redirect('/material_type_list/%s' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT WATER CONTENT   ###
+def create_water(response, material_type_id, plastic_id):
+    form = WaterContentForm()
+    if response.method == "POST":
+        form = WaterContentForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["plastic_id"] = Plastic.objects.get(pk=plastic_id)
+            model = WaterContent(**cleaned_data)
+            model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_water(response, material_type_id, plastic_id, water_id):
+    material_info = WaterContent.objects.get(pk=water_id)
+    form = WaterContentForm(instance=material_info)
+    if response.method == "POST":
+        form = WaterContentForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_water(response, material_type_id, plastic_id, water_id):
+    material_info = WaterContent.objects.get(pk=water_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT TEMPERATURE   ###
+def create_temp(response, material_type_id, plastic_id, water_id):
+    form = TemperatureForm()
+    if response.method == "POST":
+        form = TemperatureForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["water_content_id"] = WaterContent.objects.get(pk=water_id)
+            model = Temperature(**cleaned_data)
+            model.save()
+            return redirect('temperature_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_temp(response, material_type_id, plastic_id, water_id, temp_id):
+    material_info = Temperature.objects.get(pk=temp_id)
+    form = TemperatureForm(instance=material_info)
+    if response.method == "POST":
+        form = TemperatureForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('temperature_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_temp(response, material_type_id, plastic_id, water_id, temp_id):
+    material_info = Temperature.objects.get(pk=temp_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('temperature_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT FIBRE ORIENTATION   ###
+def create_fibre(response, material_type_id, plastic_id, water_id, temp_id):
+    form = FibreOrientationForm()
+    if response.method == "POST":
+        form = FibreOrientationForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["temperature_id"] = Temperature.objects.get(pk=temp_id)
+            model = FibreOrientation(**cleaned_data)
+            model.save()
+            return redirect('fibre_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id, temp_id=temp_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    material_info = FibreOrientation.objects.get(pk=fibre_id)
+    form = FibreOrientationForm(instance=material_info)
+    if response.method == "POST":
+        form = FibreOrientationForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('fibre_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id, temp_id=temp_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    material_info = FibreOrientation.objects.get(pk=fibre_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('fibre_list', material_type_id=material_type_id,plastic_id=plastic_id, water_id=water_id, temp_id=temp_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT CURVE PLASTIC  ###
+def create_static_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    form = FibreStaticCurveForm()
+    if response.method == "POST":
+        form = FibreStaticCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["fibre_id"] = FibreOrientation.objects.get(pk=fibre_id)
+            static_model = FibreStaticCurve(**cleaned_data)
+            static_model.save()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_sn_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    form = FibreSnCurveForm()
+    if response.method == "POST":
+        form = FibreSnCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["fibre_id"] = FibreOrientation.objects.get(pk=fibre_id)
+            sn_model = FibreSnCurve(**cleaned_data)
+            sn_model.save()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
+    if FibreStaticCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = FibreStaticCurve.objects.get(name=curve_name)
+        form = FibreStaticCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = FibreStaticCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+
+    elif FibreSnCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = FibreSnCurve.objects.get(name=curve_name)
+        form = FibreSnCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = FibreSnCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
+    material_info = {"name":curve_name}
+    if FibreStaticCurve.objects.filter(name=curve_name).exists():
+        curve_info = FibreStaticCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    elif FibreSnCurve.objects.filter(name=curve_name).exists():
+        curve_info = FibreSnCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info }
     return render(response, "main/delete_form.html", context)

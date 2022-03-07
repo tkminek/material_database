@@ -1,10 +1,10 @@
 # material_database
 Hanon material database
 
-user_user:
+admin:
 acc:hanon
 pass:hanon
 
-pip install django-filter
-pip install django-bootstrap-form
-pip install django-fas
+user:
+acc:mbursik
+pass:Hanon2022

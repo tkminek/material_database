@@ -8,10 +8,11 @@ Material info
 <div class="container">
   <div class="row">
     <div class="col-sm">
+        <br>
         <h1 class="mt-2">{{material_info.name}}</h1>
-        <h6 class="mt-2">Water content: {{water_info.name}}</h6>
+        <h6 class="mt-2">Humidity: {{water_info.name}}</h6>
         <h6 class="mt-2">Temperature: {{temp_info.name}}</h6>
-        <h6 class="mt-2">Fibre info: {{fibre_info.name}}</h6>
+        <h6 class="mt-2">Fibre orientation: {{fibre_info.name}}</h6>
             <hr class="mt-0 mb-4">
     </div>
   </div>
@@ -41,6 +42,12 @@ Material info
                 <th class="text-center align-middle" scope="row">μ</th>
                 <th class="text-center align-middle" scope="row">{{fibre_info.nu}}</th>
                 <th class="text-center align-middle" scope="row">-</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="row">Density</th>
+                <th class="text-center align-middle" scope="row">ρ</th>
+                <th class="text-center align-middle" scope="row">{{fibre_info.rho}}</th>
+                <th class="text-center align-middle" scope="row">kg/m^3</th>
             </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Ultimate tensile strength</th>
@@ -91,13 +98,13 @@ Material info
                  <td class="text-center align-middle">{{item.curve_type}}</td>
                  {% if user.is_authenticated %}
                  <td class="text-center align-middle">
-                   <a class="btn btn-info" href="">Edit</a>
-                   <a class="btn btn-danger" href="">Delete</a>
+                   <a class="btn btn-info" href="{%url 'update_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id item.name%}">Edit</a>
+                   <a class="btn btn-danger" href="{%url 'delete_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id item.name%}">Delete</a>
                  </td>
                  {% else %}
                  <td class="text-center align-middle">
-                   <a class="btn btn-info disabled" href="">Edit</a>
-                   <a class="btn btn-danger disabled" href="">Delete</a>
+                   <a class="btn btn-info disabled" href="{%url 'update_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id item.name%}">Edit</a>
+                   <a class="btn btn-danger disabled" href="{%url 'delete_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id item.name%}">Delete</a>
                  </td>
                  {% endif %}
              </tr>
@@ -114,15 +121,15 @@ Material info
             {% if user.is_authenticated %}
             <table>
                 <td class="text-center align-middle">
-                    <a class="btn btn-success " href="">Add static curve</a>
-                    <a class="btn btn-success " href="">Add Sn curve</a>
+                    <a class="btn btn-success " href="{%url 'create_static_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add static curve</a>
+                    <a class="btn btn-success " href="{%url 'create_sn_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add Sn curve</a>
                 </td>
             </table>
             {% else %}
             <table>
                 <td class="text-center align-middle">
-                    <a class="btn btn-success disabled" href="">Add static curve</a>
-                    <a class="btn btn-success disabled" href="">Add Sn curve</a>
+                    <a class="btn btn-success disabled" href="{%url 'create_static_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add static curve</a>
+                    <a class="btn btn-success disabled" href="{%url 'create_sn_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add Sn curve</a>
                 </td>
             </table>
             {% endif %}
