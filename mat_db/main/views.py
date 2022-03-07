@@ -194,7 +194,7 @@ def create_material(response, material_type_id):
             cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
             model = Material(**cleaned_data)
             model.save()
-            return redirect('/material_type_list/%s/steel_al' % material_type_id)
+            return redirect('/material_type_list/steel_al/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -206,7 +206,7 @@ def update_material(response, material_type_id, material_id):
         form = MaterialForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('/material_type_list/%s/steel_al' % material_type_id)
+            return redirect('/material_type_list/steel_al/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -215,7 +215,7 @@ def delete_material(response, material_type_id, material_id):
     material_info = Material.objects.get(pk=material_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('/material_type_list/%s/steel_al' % material_type_id)
+        return redirect('/material_type_list/steel_al/%s' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 
@@ -248,7 +248,7 @@ def create_hose(response, material_type_id):
             hose_model_d = HoseDynamic(**cleaned_data_d)
             hose_model_d.save()
 
-            return redirect('/material_type_list/%s/hose' % material_type_id)
+            return redirect('/material_type_list/hose/%s' % material_type_id)
     context = {"form": form, "form_s": form_s, "form_d": form_d, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -269,7 +269,7 @@ def update_hose(response, material_type_id, hose_id):
             form_s.save()
             form_d.save()
 
-            return redirect('/material_type_list/%s/hose' % material_type_id)
+            return redirect('/material_type_list/hose/%s' % material_type_id)
     context = {"form": form, "form_s": form_s, "form_d": form_d, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -278,7 +278,7 @@ def delete_hose(response, material_type_id, hose_id):
     hose_info = Hose.objects.get(pk=hose_id)
     if response.method == "POST":
         hose_info.delete()
-        return redirect('/material_type_list/%s/hose' % material_type_id)
+        return redirect('/material_type_list/hose/%s' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": hose_info}
     return render(response, "main/delete_form.html", context)
 
@@ -500,7 +500,7 @@ def create_plastic(response, material_type_id):
             cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
             model = Plastic(**cleaned_data)
             model.save()
-            return redirect('/material_type_list/%s/plastic' % material_type_id)
+            return redirect('/material_type_list/plastic/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -512,7 +512,7 @@ def update_plastic(response, material_type_id, plastic_id):
         form = PlasticForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('/material_type_list/%s/plastic' % material_type_id)
+            return redirect('/material_type_list/plastic/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -521,7 +521,7 @@ def delete_plastic(response, material_type_id, plastic_id):
     material_info = Plastic.objects.get(pk=plastic_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('/material_type_list/%s/plastic' % material_type_id)
+        return redirect('/material_type_list/plastic/%s' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 
@@ -536,7 +536,7 @@ def create_water(response, material_type_id, plastic_id):
             cleaned_data["plastic_id"] = Plastic.objects.get(pk=plastic_id)
             model = WaterContent(**cleaned_data)
             model.save()
-            return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+            return redirect('water_info', material_type_id=material_type_id, plastic_id=plastic_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -548,7 +548,7 @@ def update_water(response, material_type_id, plastic_id, water_id):
         form = WaterContentForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+            return redirect('water_info', material_type_id=material_type_id, plastic_id=plastic_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -557,7 +557,7 @@ def delete_water(response, material_type_id, plastic_id, water_id):
     material_info = WaterContent.objects.get(pk=water_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('material_info', material_type_id=material_type_id, material_id=plastic_id)
+        return redirect('water_info', material_type_id=material_type_id, plastic_id=plastic_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 
@@ -711,7 +711,7 @@ def create_rubber(response, material_type_id):
             cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
             model = Rubber(**cleaned_data)
             model.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/rubber/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -723,7 +723,7 @@ def update_rubber(response, material_type_id, rubber_id):
         form = RubberForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/rubber/%s' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -732,7 +732,7 @@ def delete_rubber(response, material_type_id, rubber_id):
     material_info = Rubber.objects.get(pk=rubber_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('/material_type_list/%s' % material_type_id)
+        return redirect('/material_type_list/rubber/%s' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 

@@ -101,7 +101,7 @@ class SnCurveForm(forms.ModelForm):
         exclude = ['material_id']
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
-            "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
+            "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Strain Amplitude List - Split By ","'}),
             "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Number Of Cycles - Split By ","'}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
         }
@@ -171,7 +171,7 @@ class FibreSnCurveForm(forms.ModelForm):
         exclude = ['fibre_id']
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
-            "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
+            "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Strain Amplitude List - Split By ","'}),
             "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Number Of Cycles - Split By ","'}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
         }
