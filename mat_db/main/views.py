@@ -79,58 +79,66 @@ def rubber_list(response, material_type_id):
         })
 
 
+def hose_info(response, material_type_id, hose_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    hose_info = Hose.objects.get(pk=hose_id)
+    if HoseStatic.objects.filter(Stat_hose_id=hose_id).exists():
+        hose_static_info = HoseStatic.objects.get(Stat_hose_id=hose_id)
+    else:
+        hose_static_info = ""
+    if HoseDynamic.objects.filter(Dyn_hose_id=hose_id).exists():
+        hose_dynamic_info = HoseDynamic.objects.get(Dyn_hose_id=hose_id)
+    else:
+        hose_dynamic_info =""
+    return render(response, "main/hose_info.html", {
+        "material_type": material_type,
+        "hose_info": hose_info,
+        "hose_static_info": hose_static_info,
+        "hose_dynamic_info": hose_dynamic_info,
+    })
+
+
 def material_info(response, material_type_id, material_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
-    if len(material_type.hose_set.all()) != 0:
-        hose_info = Hose.objects.get(pk=material_id)
-        if HoseStatic.objects.filter(Stat_hose_id=material_id).exists():
-            hose_static_info = HoseStatic.objects.get(Stat_hose_id=material_id)
-        else:
-            hose_static_info = ""
-        if HoseDynamic.objects.filter(Dyn_hose_id=material_id).exists():
-            hose_dynamic_info = HoseDynamic.objects.get(Dyn_hose_id=material_id)
-        else:
-            hose_dynamic_info =""
-        return render(response, "main/hose_info.html", {
-            "material_type": material_type,
-            "hose_info": hose_info,
-            "hose_static_info": hose_static_info,
-            "hose_dynamic_info": hose_dynamic_info,
-        })
-    elif len(material_type.material_set.all()) != 0:
-        material_info = Material.objects.get(pk=material_id)
-        c_curve=CyclicCurve.objects.filter(material_id=material_id)
-        en_curve = EnCurve.objects.filter(material_id=material_id)
-        sn_curve = SnCurve.objects.filter(material_id=material_id)
-        s_curve = StaticCurve.objects.filter(material_id=material_id)
-        curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
-        return render(response, "main/material_info.html", {
-            "material_type": material_type,
-            "material_info": material_info,
-            "curve_ls": curve_ls,
-        })
-    elif len(material_type.plastic_set.all()) != 0:
-        material_info = Plastic.objects.get(pk=material_id)
-        water_ls = WaterContent.objects.filter(plastic_id=material_id)
-        my_filter = WaterFilter(response.GET, queryset=water_ls)
-        water_ls = my_filter.qs
-        return render(response, "main/water_list.html", {
-            "material_info": material_info,
-            "material_type": material_type,
-            "water_ls": water_ls,
-            "my_filter": my_filter,
-        })
-    elif len(material_type.rubber_set.all()) != 0:
-        material_info = Rubber.objects.get(pk=material_id)
-        temp_ls = RubberTemp.objects.filter(rubber_id=material_id)
-        my_filter = RubberTempFilter(response.GET, queryset=temp_ls)
-        temp_ls = my_filter.qs
-        return render(response, "main/rubber_temp_list.html", {
-            "material_info": material_info,
-            "material_type": material_type,
-            "temp_ls": temp_ls,
-            "my_filter": my_filter,
-        })
+    material_info = Material.objects.get(pk=material_id)
+    c_curve = CyclicCurve.objects.filter(material_id=material_id)
+    en_curve = EnCurve.objects.filter(material_id=material_id)
+    sn_curve = SnCurve.objects.filter(material_id=material_id)
+    s_curve = StaticCurve.objects.filter(material_id=material_id)
+    curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
+    return render(response, "main/material_info.html", {
+        "material_type": material_type,
+        "material_info": material_info,
+        "curve_ls": curve_ls,
+    })
+
+
+def water_info(response, material_type_id, plastic_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_ls = WaterContent.objects.filter(plastic_id=plastic_id)
+    my_filter = WaterFilter(response.GET, queryset=water_ls)
+    water_ls = my_filter.qs
+    return render(response, "main/water_list.html", {
+        "material_info": material_info,
+        "material_type": material_type,
+        "water_ls": water_ls,
+        "my_filter": my_filter,
+    })
+
+
+def rub_info(response, material_type_id, rubber_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_ls = RubberTemp.objects.filter(rubber_id=rubber_id)
+    my_filter = RubberTempFilter(response.GET, queryset=temp_ls)
+    temp_ls = my_filter.qs
+    return render(response, "main/rubber_temp_list.html", {
+        "material_info": material_info,
+        "material_type": material_type,
+        "temp_ls": temp_ls,
+        "my_filter": my_filter,
+    })
 
 
 def curve_info(response, material_type_id, material_id, curve_name):
@@ -186,7 +194,7 @@ def create_material(response, material_type_id):
             cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
             model = Material(**cleaned_data)
             model.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/steel_al' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -198,7 +206,7 @@ def update_material(response, material_type_id, material_id):
         form = MaterialForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/steel_al' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -207,7 +215,7 @@ def delete_material(response, material_type_id, material_id):
     material_info = Material.objects.get(pk=material_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('/material_type_list/%s' % material_type_id)
+        return redirect('/material_type_list/%s/steel_al' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 
@@ -240,7 +248,7 @@ def create_hose(response, material_type_id):
             hose_model_d = HoseDynamic(**cleaned_data_d)
             hose_model_d.save()
 
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/hose' % material_type_id)
     context = {"form": form, "form_s": form_s, "form_d": form_d, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -261,7 +269,7 @@ def update_hose(response, material_type_id, hose_id):
             form_s.save()
             form_d.save()
 
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/hose' % material_type_id)
     context = {"form": form, "form_s": form_s, "form_d": form_d, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -270,7 +278,7 @@ def delete_hose(response, material_type_id, hose_id):
     hose_info = Hose.objects.get(pk=hose_id)
     if response.method == "POST":
         hose_info.delete()
-        return redirect('/material_type_list/%s' % material_type_id)
+        return redirect('/material_type_list/%s/hose' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": hose_info}
     return render(response, "main/delete_form.html", context)
 
@@ -492,7 +500,7 @@ def create_plastic(response, material_type_id):
             cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
             model = Plastic(**cleaned_data)
             model.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/plastic' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -504,7 +512,7 @@ def update_plastic(response, material_type_id, plastic_id):
         form = PlasticForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('/material_type_list/%s' % material_type_id)
+            return redirect('/material_type_list/%s/plastic' % material_type_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -513,7 +521,7 @@ def delete_plastic(response, material_type_id, plastic_id):
     material_info = Plastic.objects.get(pk=plastic_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('/material_type_list/%s' % material_type_id)
+        return redirect('/material_type_list/%s/plastic' % material_type_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 

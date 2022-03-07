@@ -27,7 +27,7 @@ Material list
          {% for item in material_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
+                 <a class="btn btn-outline-dark btn-lg" href="{%url 'water_info' material_type.id item.id%}" role="button">{{item.name}}</a>
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">

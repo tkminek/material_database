@@ -27,7 +27,7 @@ Hose list
          {% for item in hose_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <a class="btn btn-outline-dark btn-lg" href="{%url 'material_info' material_type.id item.id%}" role="button">{{item.name}}</a>
+                 <a class="btn btn-outline-dark btn-lg" href="{%url 'hose_info' material_type.id item.id%}" role="button">{{item.name}}</a>
              </td>
              <td class="text-center align-middle"><h5>{{item.type}}</h5></td>
              <td class="text-center align-middle">
