@@ -737,6 +737,17 @@ def delete_rubber(response, material_type_id, rubber_id):
     return render(response, "main/delete_form.html", context)
 
 
+def rubber_temp_list(response, material_type_id, rubber_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    temp_ls = RubberTemp.objects.filter(pk=rubber_id)
+    my_filter = TempFilter(response.GET, queryset=temp_ls)
+    temp_ls = my_filter.qs
+    return render(response, "main/rubber_temp_list.html", {
+        "material_type": material_type,
+        "temp_ls": temp_ls,
+        "my_filter": my_filter,
+    })
+
 ###   CREATE/ADD/EDIT RUBBER TEMP   ###
 def create_rubber_temp(response, material_type_id, rubber_id):
     form = RubberTempForm()

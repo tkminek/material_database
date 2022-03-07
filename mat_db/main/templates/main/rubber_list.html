@@ -27,17 +27,17 @@ Material list
          {% for item in material_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <a class="btn btn-outline-dark btn-lg" href="{%url 'temp_list' material_type.id item.id%}" role="button">{{item.name}}</a>
+                 <a class="btn btn-outline-dark btn-lg" href="" role="button">{{item.name}}</a>
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">
-               <a class="btn btn-info" href="{%url 'update_rubber' material_type.id item.id%}">Edit</a>
-               <a class="btn btn-danger" href="{%url 'delete_rubber' material_type.id item.id%}">Delete</a>
+               <a class="btn btn-info" href="">Edit</a>
+               <a class="btn btn-danger" href="">Delete</a>
              </td>
              {% else %}
              <td class="text-center align-middle">
-               <a class="btn btn-info disabled" href="{%url 'update_rubber' material_type.id item.id%}">Edit</a>
-               <a class="btn btn-danger disabled" href="{%url 'delete_rubber' material_type.id item.id%}">Delete</a>
+               <a class="btn btn-info disabled" href="">Edit</a>
+               <a class="btn btn-danger disabled" href="">Delete</a>
              </td>
              {% endif %}
          </tr>
@@ -50,9 +50,9 @@ Material list
 <br>
 <div class="card card-body">
     {% if user.is_authenticated %}
-    <a class="btn btn-success " href="{%url 'create_rubber' material_type.id%}">Add material</a>
+    <a class="btn btn-success " href="">Add material</a>
     {% else %}
-    <a class="btn btn-success disabled" href="{%url 'create_rubber' material_type.id%}">Add material</a>
+    <a class="btn btn-success disabled" href="">Add material</a>
     {% endif %}
 </div>
 <br>
