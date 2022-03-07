@@ -16,12 +16,10 @@ def material_type_list(response):
     count_ls = {}
     for mat_type in mat_type_ls:
         count_ls[mat_type] = 0
-
     for mat_type in mat_type_ls:
         mat_id = mat_type.id
         if Material.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
-            print(mat_type)
         elif Hose.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
         elif Plastic.objects.filter(material_type_id=mat_id).count() != 0:
@@ -35,42 +33,50 @@ def material_type_list(response):
 
 def material_list(response, material_type_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
-    if len(material_type.hose_set.all()) != 0:
-        hose_ls = Hose.objects.filter(material_type_id=material_type_id)
-        my_filter = HoseFilter(response.GET, queryset=hose_ls)
-        hose_ls = my_filter.qs
-        return render(response, "main/hose_list.html", {
-            "hose_ls": hose_ls,
-            "material_type": material_type,
-            "my_filter": my_filter,
+    material_ls = Material.objects.filter(material_type_id=material_type_id)
+    my_filter = MaterialFilter(response.GET, queryset=material_ls)
+    material_ls = my_filter.qs
+    return render(response, "main/material_list.html", {
+        "material_ls": material_ls,
+        "material_type": material_type,
+        "my_filter": my_filter,
         })
-    elif len(material_type.material_set.all()) != 0:
-        material_ls = Material.objects.filter(material_type_id=material_type_id)
-        my_filter = MaterialFilter(response.GET, queryset=material_ls)
-        material_ls = my_filter.qs
-        return render(response, "main/material_list.html", {
-            "material_ls": material_ls,
-            "material_type": material_type,
-            "my_filter": my_filter,
-            })
-    elif len(material_type.plastic_set.all()) != 0:
-        material_ls = Plastic.objects.filter(material_type_id=material_type_id)
-        my_filter = MaterialFilter(response.GET, queryset=material_ls)
-        material_ls = my_filter.qs
-        return render(response, "main/plastic_list.html", {
-            "material_ls": material_ls,
-            "material_type": material_type,
-            "my_filter": my_filter,
-            })
-    elif len(material_type.rubber_set.all()) != 0:
-        material_ls = Rubber.objects.filter(material_type_id=material_type_id)
-        my_filter = MaterialFilter(response.GET, queryset=material_ls)
-        material_ls = my_filter.qs
-        return render(response, "main/rubber_list.html", {
-            "material_ls": material_ls,
-            "material_type": material_type,
-            "my_filter": my_filter,
-            })
+
+
+def hose_list(response, material_type_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    hose_ls = Hose.objects.filter(material_type_id=material_type_id)
+    my_filter = HoseFilter(response.GET, queryset=hose_ls)
+    hose_ls = my_filter.qs
+    return render(response, "main/hose_list.html", {
+        "hose_ls": hose_ls,
+        "material_type": material_type,
+        "my_filter": my_filter,
+    })
+
+
+def plastic_list(response, material_type_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_ls = Plastic.objects.filter(material_type_id=material_type_id)
+    my_filter = MaterialFilter(response.GET, queryset=material_ls)
+    material_ls = my_filter.qs
+    return render(response, "main/plastic_list.html", {
+        "material_ls": material_ls,
+        "material_type": material_type,
+        "my_filter": my_filter,
+        })
+
+
+def rubber_list(response, material_type_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_ls = Rubber.objects.filter(material_type_id=material_type_id)
+    my_filter = MaterialFilter(response.GET, queryset=material_ls)
+    material_ls = my_filter.qs
+    return render(response, "main/rubber_list.html", {
+        "material_ls": material_ls,
+        "material_type": material_type,
+        "my_filter": my_filter,
+        })
 
 
 def material_info(response, material_type_id, material_id):

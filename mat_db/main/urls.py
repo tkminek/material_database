@@ -5,7 +5,10 @@ from . import views
 urlpatterns = [
     path('', views.home, name="home"),
     path('material_type_list/', views.material_type_list, name="material_type_list"),
-    path('material_type_list/<int:material_type_id>/', views.material_list, name= "material_list"),
+    path('material_type_list/<int:material_type_id>/steel_al/', views.material_list, name="material_list"),
+    path('material_type_list/<int:material_type_id>/hose/', views.hose_list, name="hose_list"),
+    path('material_type_list/<int:material_type_id>/plastic/', views.plastic_list, name="plastic_list"),
+    path('material_type_list/<int:material_type_id>/rubber/', views.rubber_list, name="rubber_list"),
     path('material_type_list/<int:material_type_id>/<int:material_id>', views.material_info, name="material_info"),
     path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>', views.curve_info, name="curve_info"),
     path('material_type_list/<int:material_type_id>/create_material/', views.create_material, name="create_material"),

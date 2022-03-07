@@ -19,7 +19,17 @@ Material types
             {% for item,count in count_ls.items%}
             <tr>
                 <td class="text-center align-middle">
+                    {% if item.name == "Aluminium" %}
                     <a href="{%url 'material_list' item.id%}"><h3 style="color:black">{{ item.name }}</h3></a>
+                    {% elif item.name == "Steel" %}
+                    <a href="{%url 'material_list' item.id%}"><h3 style="color:black">{{ item.name }}</h3></a>
+                    {% elif item.name == "Hose" %}
+                    <a href="{%url 'hose_list' item.id%}"><h3 style="color:black">{{ item.name }}</h3></a>
+                    {% elif item.name == "Plastic" %}
+                    <a href="{%url 'plastic_list' item.id%}"><h3 style="color:black">{{ item.name }}</h3></a>
+                    {% elif item.name == "Rubber" %}
+                    <a href="{%url 'rubber_list' item.id%}"><h3 style="color:black">{{ item.name }}</h3></a>
+                    {% endif %}
                 </td>
                 <td class="text-center align-middle">{{ count }}</td>
             </tr>
