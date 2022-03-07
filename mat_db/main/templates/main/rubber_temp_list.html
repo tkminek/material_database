@@ -6,6 +6,7 @@ Material list
 {% block content %}
 <br>
 <h1 class="mt-2">{{material_info.name}}</h1>
+<hr class="mt-0 mb-4">
 <br>
 <div>
    <form method="get">
@@ -23,20 +24,20 @@ Material list
      </tr>
      </thead>
      <tbody>
-         {% for item in water_ls %}
+         {% for item in temp_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <a class="btn btn-outline-dark btn-lg" href="{%url 'temperature_list' material_type.id material_info.id item.id%}" role="button">{{item.name}}</a>
+                 <div class="btn btn-outline-dark btn-lg" href="{%url 'rubber_info' material_type.id material_info.id item.id%}" role="button">{{item.name}}</div>
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">
-               <a class="btn btn-info" href="{%url 'update_water' material_type.id material_info.id item.id%}">Edit</a>
-               <a class="btn btn-danger" href="{%url 'delete_water' material_type.id material_info.id item.id%}">Delete</a>
+               <a class="btn btn-info" href="{%url 'update_rubber_temp' material_type.id material_info.id item.id%}">Edit</a>
+               <a class="btn btn-danger" href="{%url 'delete_rubber_temp' material_type.id material_info.id item.id%}">Delete</a>
              </td>
              {% else %}
              <td class="text-center align-middle">
-               <a class="btn btn-info disabled" href="{%url 'update_water' material_type.id material_info.id item.id%}">Edit</a>
-               <a class="btn btn-danger disabled" href="{%url 'delete_water' material_type.id material_info.id item.id%}">Delete</a>
+               <a class="btn btn-info disabled" href="">Edit</a>
+               <a class="btn btn-danger disabled" href="">Delete</a>
              </td>
              {% endif %}
          </tr>
@@ -49,9 +50,9 @@ Material list
 <br>
 <div class="card card-body">
     {% if user.is_authenticated %}
-    <a class="btn btn-success " href="">Add material</a>
+    <a class="btn btn-success " href="{%url 'create_rubber_temp' material_type.id material_info.id%}">Add material</a>
     {% else %}
-    <a class="btn btn-success disabled" href="{%url 'create_water' material_type.id material_info.id%}">Add material</a>
+    <a class="btn btn-success disabled" href="{%url 'create_rubber_temp' material_type.id material_info.id%}">Add material</a>
     {% endif %}
 </div>
 <br>

@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm
 from itertools import chain
 from .apps import Graph
-from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter
+from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter, RubberTempFilter
 
 
 def home(response):
@@ -22,6 +22,8 @@ def material_type_list(response):
             count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
         elif Plastic.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Plastic.objects.filter(material_type_id=mat_id).count()
+        elif Rubber.objects.filter(material_type_id=mat_id).count() != 0:
+            count_ls[mat_type] = Rubber.objects.filter(material_type_id=mat_id).count()
     return render(response, "main/material_type_list.html", {
                       "count_ls": count_ls,
                    })
@@ -56,7 +58,15 @@ def material_list(response, material_type_id):
             "material_type": material_type,
             "my_filter": my_filter,
             })
-
+    elif len(material_type.rubber_set.all()) != 0:
+        material_ls = Rubber.objects.filter(material_type_id=material_type_id)
+        my_filter = MaterialFilter(response.GET, queryset=material_ls)
+        material_ls = my_filter.qs
+        return render(response, "main/rubber_list.html", {
+            "material_ls": material_ls,
+            "material_type": material_type,
+            "my_filter": my_filter,
+            })
 
 def material_info(response, material_type_id, material_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
@@ -97,6 +107,17 @@ def material_info(response, material_type_id, material_id):
             "material_info": material_info,
             "material_type": material_type,
             "water_ls": water_ls,
+            "my_filter": my_filter,
+        })
+    elif len(material_type.rubber_set.all()) != 0:
+        material_info = Rubber.objects.get(pk=material_id)
+        temp_ls = RubberTemp.objects.filter(rubber_id=material_id)
+        my_filter = RubberTempFilter(response.GET, queryset=temp_ls)
+        temp_ls = my_filter.qs
+        return render(response, "main/rubber_temp_list.html", {
+            "material_info": material_info,
+            "material_type": material_type,
+            "temp_ls": temp_ls,
             "my_filter": my_filter,
         })
 
@@ -659,3 +680,90 @@ def delete_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id
             return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
     context = {"material_type_id": material_type_id, "material_info": material_info }
     return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT RUBBER   ###
+def create_rubber(response, material_type_id):
+    form = RubberForm()
+    if response.method == "POST":
+        form = RubberForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_type_id"] = MaterialType.objects.get(pk=material_type_id)
+            model = Rubber(**cleaned_data)
+            model.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_rubber(response, material_type_id, rubber_id):
+    material_info = Rubber.objects.get(pk=rubber_id)
+    form = RubberForm(instance=material_info)
+    if response.method == "POST":
+        form = RubberForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('/material_type_list/%s' % material_type_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_rubber(response, material_type_id, rubber_id):
+    material_info = Rubber.objects.get(pk=rubber_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('/material_type_list/%s' % material_type_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+###   CREATE/ADD/EDIT RUBBER TEMP   ###
+def create_rubber_temp(response, material_type_id, rubber_id):
+    form = RubberTempForm()
+    if response.method == "POST":
+        form = RubberTempForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_id"] = Rubber.objects.get(pk=rubber_id)
+            model = RubberTemp(**cleaned_data)
+            model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_rubber_temp(response, material_type_id, rubber_id, temp_id):
+    material_info = RubberTemp.objects.get(pk=temp_id)
+    form = RubberTempForm(instance=material_info)
+    if response.method == "POST":
+        form = RubberTempForm(response.POST, instance=material_info)
+        if form.is_valid():
+            form.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+    context = {"form": form, "material_type_id": material_type_id}
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_rubber_temp(response, material_type_id, rubber_id, temp_id):
+    material_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        material_info.delete()
+        return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+    context = {"material_type_id": material_type_id, "material_info": material_info}
+    return render(response, "main/delete_form.html", context)
+
+
+def rubber_info(response, material_type_id, rubber_id, temp_id):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = Temperature.objects.get(pk=temp_id)
+    return render(response, "main/rubber_info.html", {
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+                  })
+
+
+
+

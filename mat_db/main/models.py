@@ -173,3 +173,33 @@ class FibreSnCurve(models.Model):
     Nf = models.CharField(max_length=20000)
     comment = models.CharField(max_length=1000)
     fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
+
+
+class Rubber(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class RubberTemp(models.Model):
+    name = models.CharField(max_length=200)
+    rubber_id = models.ForeignKey(Rubber, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class RubberInfo(models.Model):
+    E = models.FloatField()
+    nu = models.FloatField(blank=True)
+    rho = models.FloatField(blank=True)
+    Rm = models.FloatField(blank=True)
+    Re = models.FloatField(blank=True)
+    Ru = models.FloatField(blank=True)
+    comment = models.CharField(max_length=1000, default="")
+    temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

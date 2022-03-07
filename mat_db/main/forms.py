@@ -1,4 +1,4 @@
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp
 from django import forms
 
 
@@ -174,4 +174,22 @@ class FibreSnCurveForm(forms.ModelForm):
             "Sa": forms.TextInput(attrs={"class": "form-control", "placeholder": "Strain Amplitude List"}),
             "Nf": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Number Of Cycles - Split By ","'}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Static Curve"}),
+        }
+
+
+class RubberForm(forms.ModelForm):
+    class Meta:
+        model = Rubber
+        exclude = ['material_type_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Material Name"}),
+        }
+
+
+class RubberTempForm(forms.ModelForm):
+    class Meta:
+        model = RubberTemp
+        exclude = ['rubber_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Temperature Name"}),
         }

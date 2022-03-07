@@ -40,4 +40,11 @@ urlpatterns = [
     path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/create_sn_curve_fibre/', views.create_sn_curve_fibre, name="create_sn_curve_fibre"),
     path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/<str:curve_name>/update_curve_fibre/', views.update_curve_fibre, name="update_curve_fibre"),
     path('material_type_list/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/<str:curve_name>/delete_curve_fibre/', views.delete_curve_fibre, name="delete_curve_fibre"),
+    path('material_type_list/<int:material_type_id>/create_rubber/', views.create_rubber, name="create_rubber"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/update_rubber/', views.update_rubber, name="update_rubber"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/delete_rubber/', views.delete_rubber, name="delete_rubber"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/create_rubber_temp/', views.create_rubber_temp, name="create_rubber_temp"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/update_rubber_temp/', views.update_rubber_temp, name="update_rubber_temp"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/delete_rubber_temp/', views.delete_rubber_temp, name="delete_rubber_temp"),
+    path('material_type_list/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/', views.rubber_info, name="rubber_info"),
 ]

@@ -1,5 +1,5 @@
 import django_filters
-from .models import Material, Hose, WaterContent, Temperature, FibreOrientation
+from .models import Material, Hose, WaterContent, Temperature, FibreOrientation, RubberTemp
 
 
 class HoseFilter(django_filters.FilterSet):
@@ -52,3 +52,13 @@ class FibreFilter(django_filters.FilterSet):
         fields = {
             "name": [ "icontains" ],
         }
+
+
+class RubberTempFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = RubberTemp
+        fields = {
+            "name": [ "icontains" ],
+        }
+
