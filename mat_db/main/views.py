@@ -15,9 +15,13 @@ def material_type_list(response):
     mat_type_ls = MaterialType.objects.all()
     count_ls = {}
     for mat_type in mat_type_ls:
+        count_ls[mat_type] = 0
+
+    for mat_type in mat_type_ls:
         mat_id = mat_type.id
         if Material.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Material.objects.filter(material_type_id=mat_id).count()
+            print(mat_type)
         elif Hose.objects.filter(material_type_id=mat_id).count() != 0:
             count_ls[mat_type] = Hose.objects.filter(material_type_id=mat_id).count()
         elif Plastic.objects.filter(material_type_id=mat_id).count() != 0:
@@ -67,6 +71,7 @@ def material_list(response, material_type_id):
             "material_type": material_type,
             "my_filter": my_filter,
             })
+
 
 def material_info(response, material_type_id, material_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
