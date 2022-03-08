@@ -27,7 +27,7 @@ Material list
          {% for item in temp_ls %}
          <tr>
              <td class="text-center align-middle">
-                 <div class="btn btn-outline-dark btn-lg" href="{%url 'rubber_info' material_type.id material_info.id item.id%}" role="button">{{item.name}}</div>
+                 <a class="btn btn-outline-dark btn-lg" href="{%url 'rubber_info' material_type.id material_info.id item.id%}" role="button">{{item.name}}</a>
              </td>
              {% if user.is_authenticated %}
              <td class="text-center align-middle">
@@ -36,8 +36,8 @@ Material list
              </td>
              {% else %}
              <td class="text-center align-middle">
-               <a class="btn btn-info disabled" href="">Edit</a>
-               <a class="btn btn-danger disabled" href="">Delete</a>
+               <a class="btn btn-info disabled" href="{%url 'update_rubber_temp' material_type.id material_info.id item.id%}">Edit</a>
+               <a class="btn btn-danger disabled" href="{%url 'delete_rubber_temp' material_type.id material_info.id item.id%}">Delete</a>
              </td>
              {% endif %}
          </tr>
@@ -50,11 +50,11 @@ Material list
 <br>
 <div class="card card-body">
     {% if user.is_authenticated %}
-    <a class="btn btn-success " href="{%url 'create_rubber_temp' material_type.id material_info.id%}">Add material</a>
+    <a class="btn btn-success " href="{%url 'create_rubber_temp' material_type.id material_info.id %}">Add material</a>
     {% else %}
-    <a class="btn btn-success disabled" href="{%url 'create_rubber_temp' material_type.id material_info.id%}">Add material</a>
+    <a class="btn btn-success disabled" href="{%url 'create_rubber_temp' material_type.id material_info.id %}">Add material</a>
     {% endif %}
 </div>
 <br>
-<a class="btn btn-primary" href="{%url 'material_list' material_type.id %}" role="button">Back to plastic list</a>
+<a class="btn btn-primary" href="{%url 'rubber_list' material_type.id %}" role="button">Back to rubber list</a>
 {% endblock %}

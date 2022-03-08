@@ -739,14 +739,17 @@ def delete_rubber(response, material_type_id, rubber_id):
 
 def rubber_temp_list(response, material_type_id, rubber_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
-    temp_ls = RubberTemp.objects.filter(pk=rubber_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_ls = RubberTemp.objects.filter(rubber_id=rubber_id)
     my_filter = TempFilter(response.GET, queryset=temp_ls)
     temp_ls = my_filter.qs
     return render(response, "main/rubber_temp_list.html", {
         "material_type": material_type,
+        "material_info": material_info,
         "temp_ls": temp_ls,
         "my_filter": my_filter,
     })
+
 
 ###   CREATE/ADD/EDIT RUBBER TEMP   ###
 def create_rubber_temp(response, material_type_id, rubber_id):
@@ -758,7 +761,7 @@ def create_rubber_temp(response, material_type_id, rubber_id):
             cleaned_data["rubber_id"] = Rubber.objects.get(pk=rubber_id)
             model = RubberTemp(**cleaned_data)
             model.save()
-            return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+            return redirect('rubber_temp_list', material_type_id=material_type_id, rubber_id=rubber_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -770,7 +773,7 @@ def update_rubber_temp(response, material_type_id, rubber_id, temp_id):
         form = RubberTempForm(response.POST, instance=material_info)
         if form.is_valid():
             form.save()
-            return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+            return redirect('rubber_temp_list', material_type_id=material_type_id, rubber_id=rubber_id)
     context = {"form": form, "material_type_id": material_type_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -779,7 +782,7 @@ def delete_rubber_temp(response, material_type_id, rubber_id, temp_id):
     material_info = RubberTemp.objects.get(pk=temp_id)
     if response.method == "POST":
         material_info.delete()
-        return redirect('material_info', material_type_id=material_type_id, material_id=rubber_id)
+        return redirect('rubber_temp_list', material_type_id=material_type_id, rubber_id=rubber_id)
     context = {"material_type_id": material_type_id, "material_info": material_info}
     return render(response, "main/delete_form.html", context)
 
@@ -787,7 +790,7 @@ def delete_rubber_temp(response, material_type_id, rubber_id, temp_id):
 def rubber_info(response, material_type_id, rubber_id, temp_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     material_info = Rubber.objects.get(pk=rubber_id)
-    temp_info = Temperature.objects.get(pk=temp_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
     return render(response, "main/rubber_info.html", {
         "material_type": material_type,
         "material_info": material_info,

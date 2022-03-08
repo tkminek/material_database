@@ -184,7 +184,7 @@ class Rubber(models.Model):
 
 
 class RubberTemp(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     rubber_id = models.ForeignKey(Rubber, on_delete=models.CASCADE)
     E = models.FloatField()
     nu = models.FloatField(blank=True)

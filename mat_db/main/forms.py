@@ -191,5 +191,12 @@ class RubberTempForm(forms.ModelForm):
         model = RubberTemp
         exclude = ['rubber_id']
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Temperature Name"}),
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Material Name"}),
+            "E": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Young's Modulus"}),
+            "nu": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Poisson's Ratio"}),
+            "rho": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Density"}),
+            "Rm": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Ultimate Tensile Strength"}),
+            "Re": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Yield Stress"}),
+            "Ru": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Fatigue Limit"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }

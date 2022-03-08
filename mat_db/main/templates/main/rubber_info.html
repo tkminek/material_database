@@ -30,31 +30,31 @@ Material info
             <tr>
                 <th class="text-center align-middle" scope="row">Young's modulus</th>
                 <th class="text-center align-middle" scope="row">E</th>
-                <th class="text-center align-middle" scope="row">{{material_info.E}}</th>
+                <th class="text-center align-middle" scope="row">{{temp_info.E}}</th>
                 <th class="text-center align-middle" scope="row">MPa</th>
             </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Poisson's ratio</th>
                 <th class="text-center align-middle" scope="row">μ</th>
-                <th class="text-center align-middle" scope="row">{{material_info.nu}}</th>
+                <th class="text-center align-middle" scope="row">{{temp_info.nu}}</th>
                 <th class="text-center align-middle" scope="row">-</th>
             </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Ultimate tensile strength</th>
                 <th class="text-center align-middle" scope="row">Rm</th>
-                <th class="text-center align-middle" scope="row">{{material_info.Rm}}</th>
+                <th class="text-center align-middle" scope="row">{{temp_info.Rm}}</th>
                 <th class="text-center align-middle" scope="row">MPa</th>
             </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Yield stress</th>
                 <th class="text-center align-middle" scope="row">Re</th>
-                <th class="text-center align-middle" scope="row">{{material_info.Re}}</th>
+                <th class="text-center align-middle" scope="row">{{temp_info.Re}}</th>
                 <th class="text-center align-middle" scope="row">MPa</th>
             </tr>
             <tr>
                 <th class="text-center align-middle" scope="row">Fatigue limit</th>
                 <th class="text-center align-middle" scope="row">Ru</th>
-                <th class="text-center align-middle" scope="row">{{material_info.Ru}}</th>
+                <th class="text-center align-middle" scope="row">{{temp_info.Ru}}</th>
                 <th class="text-center align-middle" scope="row">MPa</th>
             </tr>
             </tbody>
@@ -63,7 +63,7 @@ Material info
     <br>
     <div class="col-md-14">
         <div class="card card-body">
-            <p class="mb-0">comment : {{material_info.comment}}</p>
+            <p class="mb-0">comment : {{temp_info.comment}}</p>
         </div>
     </div>
     </div>
@@ -80,12 +80,12 @@ Material info
          </tr>
          </thead>
          <tbody>
-             {% for item in curve_ls %}
+             {% for item in model_ls %}
              <tr>
                  <td class="text-center align-middle">
                      <a class="btn btn-outline-dark btn-sm" href="">{{item.name}}</a>
                  </td>
-                 <td class="text-center align-middle">{{item.curve_type}}</td>
+                 <td class="text-center align-middle">{{item.model_type}}</td>
                  {% if user.is_authenticated %}
                  <td class="text-center align-middle">
                    <a class="btn btn-info" href="">Edit</a>
@@ -142,6 +142,6 @@ Material info
 </div>
 <br>
 <div class="container">
-    <a class="btn btn-primary" href="">Back to {{material_type.name}} list</a>
+    <a class="btn btn-primary" href="{%url 'rubber_temp_list' material_type.id material_info.id %}">Back to temperature list</a>
 </div>
 {% endblock %}
