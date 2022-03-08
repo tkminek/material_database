@@ -289,5 +289,3 @@ class NeoHookeForm(forms.ModelForm):
             "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }
-
-

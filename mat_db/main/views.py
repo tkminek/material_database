@@ -526,7 +526,7 @@ def delete_plastic(response, material_type_id, plastic_id):
     return render(response, "main/delete_form.html", context)
 
 
-###   CREATE/ADD/EDIT WATER CONTENT   ###
+#   CREATE/ADD/EDIT WATER CONTENT   #
 def create_water(response, material_type_id, plastic_id):
     form = WaterContentForm()
     if response.method == "POST":
@@ -562,7 +562,7 @@ def delete_water(response, material_type_id, plastic_id, water_id):
     return render(response, "main/delete_form.html", context)
 
 
-###   CREATE/ADD/EDIT TEMPERATURE   ###
+#   CREATE/ADD/EDIT TEMPERATURE   #
 def create_temp(response, material_type_id, plastic_id, water_id):
     form = TemperatureForm()
     if response.method == "POST":
@@ -598,7 +598,7 @@ def delete_temp(response, material_type_id, plastic_id, water_id, temp_id):
     return render(response, "main/delete_form.html", context)
 
 
-###   CREATE/ADD/EDIT FIBRE ORIENTATION   ###
+#   CREATE/ADD/EDIT FIBRE ORIENTATION   #
 def create_fibre(response, material_type_id, plastic_id, water_id, temp_id):
     form = FibreOrientationForm()
     if response.method == "POST":
@@ -634,7 +634,7 @@ def delete_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibr
     return render(response, "main/delete_form.html", context)
 
 
-###   CREATE/ADD/EDIT CURVE PLASTIC  ###
+#   CREATE/ADD/EDIT CURVE PLASTIC  #
 def create_static_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
     form = FibreStaticCurveForm()
     if response.method == "POST":
@@ -701,7 +701,7 @@ def delete_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id
     return render(response, "main/delete_form.html", context)
 
 
-###   CREATE/ADD/EDIT RUBBER   ###
+#   CREATE/ADD/EDIT RUBBER   #
 def create_rubber(response, material_type_id):
     form = RubberForm()
     if response.method == "POST":
@@ -751,7 +751,7 @@ def rubber_temp_list(response, material_type_id, rubber_id):
     })
 
 
-###   CREATE/ADD/EDIT RUBBER TEMP   ###
+#   CREATE/ADD/EDIT RUBBER TEMP   #
 def create_rubber_temp(response, material_type_id, rubber_id):
     form = RubberTempForm()
     if response.method == "POST":
