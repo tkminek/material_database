@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm, ArrudaBoyceForm, MooneyRivlinForm, PolynomialForm, YeohForm, OgdenForm, NeoHookeForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter, RubberTempFilter
@@ -791,12 +791,251 @@ def rubber_info(response, material_type_id, rubber_id, temp_id):
     material_type = MaterialType.objects.get(pk=material_type_id)
     material_info = Rubber.objects.get(pk=rubber_id)
     temp_info = RubberTemp.objects.get(pk=temp_id)
+    arruda_boyce = ArrudaBoyce.objects.filter(rubber_temp_id=temp_id)
+    mooney_rivlin = MooneyRivlin.objects.filter(rubber_temp_id=temp_id)
+    polynomial = Polynomial.objects.filter(rubber_temp_id=temp_id)
+    yeoh = Yeoh.objects.filter(rubber_temp_id=temp_id)
+    ogden = Ogden.objects.filter(rubber_temp_id=temp_id)
+    neo_hooke = NeoHooke.objects.filter(rubber_temp_id=temp_id)
+    model_ls = list(chain(arruda_boyce, mooney_rivlin, polynomial, yeoh, ogden, neo_hooke))
     return render(response, "main/rubber_info.html", {
         "material_type": material_type,
         "material_info": material_info,
         "temp_info": temp_info,
+        "model_ls": model_ls,
                   })
 
 
+###   CREATE/ADD/EDIT RUBBER MODELS   ###
+def create_arruda(response, material_type_id, rubber_id, temp_id):
+    form = ArrudaBoyceForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = ArrudaBoyceForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = ArrudaBoyce(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
 
 
+def create_mooney(response, material_type_id, rubber_id, temp_id):
+    form = MooneyRivlinForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = MooneyRivlinForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = MooneyRivlin(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_polynomial(response, material_type_id, rubber_id, temp_id):
+    form = PolynomialForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = PolynomialForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = Polynomial(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_yeoh(response, material_type_id, rubber_id, temp_id):
+    form = YeohForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = YeohForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = Yeoh(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_ogden(response, material_type_id, rubber_id, temp_id):
+    form = OgdenForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = OgdenForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = Ogden(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def create_neo_hooke(response, material_type_id, rubber_id, temp_id):
+    form = NeoHookeForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = NeoHookeForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = NeoHooke(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def update_model(response, material_type_id, rubber_id, temp_id, model_name):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if ArrudaBoyce.objects.filter(name=model_name).exists():
+        model_info_a = ArrudaBoyce.objects.get(name=model_name)
+        form = ArrudaBoyceForm(instance=model_info_a)
+        if response.method == "POST":
+            form = ArrudaBoyceForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif MooneyRivlin.objects.filter(name=model_name).exists():
+        model_info_a = MooneyRivlin.objects.get(name=model_name)
+        form = MooneyRivlinForm(instance=model_info_a)
+        if response.method == "POST":
+            form = MooneyRivlinForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Polynomial.objects.filter(name=model_name).exists():
+        model_info_a = Polynomial.objects.get(name=model_name)
+        form = PolynomialForm(instance=model_info_a)
+        if response.method == "POST":
+            form = PolynomialForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Yeoh.objects.filter(name=model_name).exists():
+        model_info_a = Yeoh.objects.get(name=model_name)
+        form = YeohForm(instance=model_info_a)
+        if response.method == "POST":
+            form = YeohForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Ogden.objects.filter(name=model_name).exists():
+        model_info_a = Ogden.objects.get(name=model_name)
+        form = OgdenForm(instance=model_info_a)
+        if response.method == "POST":
+            form = OgdenForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif NeoHooke.objects.filter(name=model_name).exists():
+        model_info_a = NeoHooke.objects.get(name=model_name)
+        form = NeoHookeForm(instance=model_info_a)
+        if response.method == "POST":
+            form = NeoHookeForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
+def delete_model(response, material_type_id, rubber_id, temp_id, model_name):
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    material_info = {"name": model_name}
+    if ArrudaBoyce.objects.filter(name=model_name).exists():
+        curve_info = ArrudaBoyce.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif MooneyRivlin.objects.filter(name=model_name).exists():
+        curve_info = MooneyRivlin.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Polynomial.objects.filter(name=model_name).exists():
+        curve_info = Polynomial.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Yeoh.objects.filter(name=model_name).exists():
+        curve_info = Yeoh.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif Ogden.objects.filter(name=model_name).exists():
+        curve_info = Ogden.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif NeoHooke.objects.filter(name=model_name).exists():
+        curve_info = NeoHooke.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/delete_form.html", context)

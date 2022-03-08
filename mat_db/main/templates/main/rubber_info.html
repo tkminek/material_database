@@ -88,13 +88,13 @@ Material info
                  <td class="text-center align-middle">{{item.model_type}}</td>
                  {% if user.is_authenticated %}
                  <td class="text-center align-middle">
-                   <a class="btn btn-info" href="">Edit</a>
-                   <a class="btn btn-danger" href="">Delete</a>
+                   <a class="btn btn-info" href="{%url 'update_model' material_type.id material_info.id temp_info.id item.name%}">Edit</a>
+                   <a class="btn btn-danger" href="{%url 'delete_model' material_type.id material_info.id temp_info.id item.name%}">Delete</a>
                  </td>
                  {% else %}
                  <td class="text-center align-middle">
-                   <a class="btn btn-info disabled" href="">Edit</a>
-                   <a class="btn btn-danger disabled" href="">Delete</a>
+                   <a class="btn btn-info disabled" href="{%url 'update_model' material_type.id material_info.id temp_info.id item.name%}">Edit</a>
+                   <a class="btn btn-danger disabled" href="{%url 'delete_model' material_type.id material_info.id temp_info.id item.name%}">Delete</a>
                  </td>
                  {% endif %}
              </tr>
@@ -110,29 +110,31 @@ Material info
         <div class="card card-body">
             {% if user.is_authenticated %}
             <table>
-                <td class="text-center align-middle">
-                    <a class="btn btn-success " href="">Add static curve</a>
-                    <h1></h1>
-                    <a class="btn btn-success " href="">Add cyclic curve</a>
-                </td>
-                <td class="text-center align-middle">
-                    <a class="btn btn-success size=10" href="">Add En curve</a>
-                    <h1></h1>
-                    <a class="btn btn-success " href="">Add Sn curve</a>
-                </td>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_arruda' material_type.id material_info.id temp_info.id %}">Add Arruda-Boyce</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_mooney' material_type.id material_info.id temp_info.id %}">Add Mooney-Rivlin</a></th>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_polynomial' material_type.id material_info.id temp_info.id %}">Add Polynomial</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_yeoh' material_type.id material_info.id temp_info.id %}">Add Yeoh</a></th>
+                </tr>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_ogden' material_type.id material_info.id temp_info.id %}">Add Ogden</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success " href="{%url 'create_neo_hooke' material_type.id material_info.id temp_info.id %}">Add Neo Hooke</a></th>
+                </tr>
             </table>
             {% else %}
             <table>
-                <td class="text-center align-middle">
-                    <a class="btn btn-success disabled" href="">Add static curve</a>
-                    <h1></h1>
-                    <a class="btn btn-success disabled" href="">Add cyclic curve</a>
-                </td>
-                <td class="text-center align-middle">
-                    <a class="btn btn-success disabled" href="">Add En curve</a>
-                    <h1></h1>
-                    <a class="btn btn-success disabled" href="">Add Sn curve</a>
-                </td>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_arruda' material_type.id material_info.id temp_info.id %}">Add Arruda-Boyce</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_mooney' material_type.id material_info.id temp_info.id %}">Add Mooney-Rivlin</a></th>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_polynomial' material_type.id material_info.id temp_info.id %}">Add Polynomial</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_yeoh' material_type.id material_info.id temp_info.id %}">Add Yeoh</a></th>
+                </tr>
+                <tr>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_ogden' material_type.id material_info.id temp_info.id %}">Add Ogden</a></th>
+                    <th class="text-center align-middle"><a class="btn btn-success disabled" href="{%url 'create_neo_hooke' material_type.id material_info.id temp_info.id %}">Add Neo Hooke</a></th>
+                </tr>
             </table>
             {% endif %}
         </div>

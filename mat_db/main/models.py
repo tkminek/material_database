@@ -197,3 +197,91 @@ class RubberTemp(models.Model):
     def __str__(self):
         return self.name
 
+
+class ArrudaBoyce(models.Model):
+    model_type = "Arruda-Boyce"
+    name = models.CharField(max_length=200, unique=True)
+    nu = models.CharField(max_length=20000)
+    lambda_m = models.CharField(max_length=20000)
+    D = models.CharField(max_length=20000)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class MooneyRivlin(models.Model):
+    model_type = "Mooney-Rivlin"
+    name = models.CharField(max_length=200, unique=True)
+    C_10 = models.CharField(max_length=20000)
+    C_01 = models.CharField(max_length=20000)
+    D_1 = models.CharField(max_length=20000)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Polynomial(models.Model):
+    model_type = "Polynomial"
+    name = models.CharField(max_length=200, unique=True)
+    C_10 = models.CharField(max_length=20000)
+    C_20 = models.CharField(max_length=20000, blank=True)
+    C_30 = models.CharField(max_length=20000, blank=True)
+    D_1 = models.CharField(max_length=20000)
+    D_2 = models.CharField(max_length=20000, blank=True)
+    D_3 = models.CharField(max_length=20000, blank=True)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Yeoh(models.Model):
+    model_type = "Yeoh"
+    name = models.CharField(max_length=200, unique=True)
+    C_10 = models.CharField(max_length=20000)
+    C_20 = models.CharField(max_length=20000)
+    C_30 = models.CharField(max_length=20000)
+    D_1 = models.CharField(max_length=20000)
+    D_2 = models.CharField(max_length=20000)
+    D_3 = models.CharField(max_length=20000)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Ogden(models.Model):
+    model_type = "ogden"
+    name = models.CharField(max_length=200, unique=True)
+    nu_1 = models.CharField(max_length=20000)
+    alfa_1 = models.CharField(max_length=20000)
+    D_1 = models.CharField(max_length=20000)
+    nu_2 = models.CharField(max_length=20000, blank=True)
+    alfa_2 = models.CharField(max_length=20000, blank=True)
+    D_2 = models.CharField(max_length=20000, blank=True)
+    nu_3 = models.CharField(max_length=20000, blank=True)
+    alfa_3 = models.CharField(max_length=20000, blank=True)
+    D_3 = models.CharField(max_length=20000, blank=True)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class NeoHooke(models.Model):
+    model_type = "Neo-Hooke"
+    name = models.CharField(max_length=200, unique=True)
+    C_10 = models.CharField(max_length=20000)
+    D_1 = models.CharField(max_length=20000)
+    comment = models.CharField(max_length=1000)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

@@ -1,4 +1,4 @@
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke
 from django import forms
 
 
@@ -200,3 +200,94 @@ class RubberTempForm(forms.ModelForm):
             "Ru": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Fatigue Limit"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }
+
+
+class ArrudaBoyceForm(forms.ModelForm):
+    class Meta:
+        model = ArrudaBoyce
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "nu": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ Value"}),
+            "lambda_m": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ Value"}),
+            "D": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class MooneyRivlinForm(forms.ModelForm):
+    class Meta:
+        model = MooneyRivlin
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "C_10": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_10 Value"}),
+            "C_01": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_01 Value"}),
+            "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class PolynomialForm(forms.ModelForm):
+    class Meta:
+        model = Polynomial
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "C_10": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_10 Value"}),
+            "C_20": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_20 Value"}),
+            "C_30": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_30 Value"}),
+            "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
+            "D_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_2 Value"}),
+            "D_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_3 Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class YeohForm(forms.ModelForm):
+    class Meta:
+        model = Yeoh
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "C_10": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_10 Value"}),
+            "C_20": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_20 Value"}),
+            "C_30": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_30 Value"}),
+            "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
+            "D_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_2 Value"}),
+            "D_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_3 Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class OgdenForm(forms.ModelForm):
+    class Meta:
+        model = Ogden
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "nu_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ1 Value"}),
+            "alfa_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ1 Value"}),
+            "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D1 Value"}),
+            "nu_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ2 Value"}),
+            "alfa_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ2 Value"}),
+            "D_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D2 Value"}),
+            "nu_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ3 Value"}),
+            "alfa_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ3 Value"}),
+            "D_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D3 Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+
+class NeoHookeForm(forms.ModelForm):
+    class Meta:
+        model = NeoHooke
+        exclude = ['rubber_temp_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
+            "C_10": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type C_10 Value"}),
+            "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
+        }
+
+

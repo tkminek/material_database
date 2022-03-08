@@ -54,4 +54,12 @@ urlpatterns = [
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/update_rubber_temp/', views.update_rubber_temp, name="update_rubber_temp"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/delete_rubber_temp/', views.delete_rubber_temp, name="delete_rubber_temp"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/', views.rubber_info, name="rubber_info"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_arruda', views.create_arruda, name="create_arruda"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_mooney', views.create_mooney, name="create_mooney"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_polynomial', views.create_polynomial, name="create_polynomial"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_yeoh', views.create_yeoh, name="create_yeoh"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_ogden', views.create_ogden, name="create_ogden"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_neo_hooke', views.create_neo_hooke, name="create_neo_hooke"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/update_model', views.update_model, name="update_model"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/delete_model', views.delete_model, name="delete_model"),
 ]
