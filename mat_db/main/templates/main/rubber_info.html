@@ -9,6 +9,7 @@ Material info
   <div class="row">
     <div class="col-sm">
         <h1 class="mt-2">{{material_info.name}}</h1>
+        <h6 class="mt-2">Temperature: {{temp_info.name}}</h6>
             <hr class="mt-0 mb-4">
     </div>
   </div>
@@ -69,7 +70,7 @@ Material info
     </div>
     <div class="col-md-5 offset-md-0">
     <div class="card card-body">
-      <h3 class="mt-2">Material curves</h3>
+      <h3 class="mt-2">Rubber models</h3>
       <br>
       <table class="table table-striped">
          <thead class="thead-dark">
@@ -83,7 +84,7 @@ Material info
              {% for item in model_ls %}
              <tr>
                  <td class="text-center align-middle">
-                     <a class="btn btn-outline-dark btn-sm" href="">{{item.name}}</a>
+                     <a class="btn btn-outline-dark btn-sm" href="{%url 'model_info' material_type.id material_info.id temp_info.id item.name%}">{{item.name}}</a>
                  </td>
                  <td class="text-center align-middle">{{item.model_type}}</td>
                  {% if user.is_authenticated %}

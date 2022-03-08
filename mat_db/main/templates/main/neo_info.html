@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+{% block title %}
+Material info
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="mt-2">{{material_info.name}}</h1>
+        <h6 class="mt-2">Temperature: {{temp_info.name}}</h6>
+        <h6 class="mt-2">Model: {{model_info.model_type}}</h6>
+        <hr class="mt-0 mb-4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <h3 class="mt-2">{{model_info.name}}</h3>
+            <br>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th class="text-center align-middle" scope="col">Physical property</th>
+                    <th class="text-center align-middle" scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="text-center align-middle" scope="row">C<sub>10</sub></th>
+                    <th class="text-center align-middle" scope="row">{{model_info.C_10}}</th>
+                </tr>
+                <tr>
+                    <th class="text-center align-middle" scope="row">D<sub>1</sub></th>
+                    <th class="text-center align-middle" scope="row">{{model_info.D_1}}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <p class="mb-0">comment : {{model_info.comment}}</p>
+        </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+    <input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
+</div>
+{% endblock %}

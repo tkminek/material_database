@@ -257,7 +257,7 @@ class Yeoh(models.Model):
 
 
 class Ogden(models.Model):
-    model_type = "ogden"
+    model_type = "Ogden"
     name = models.CharField(max_length=200, unique=True)
     nu_1 = models.CharField(max_length=20000)
     alfa_1 = models.CharField(max_length=20000)

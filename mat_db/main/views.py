@@ -1039,3 +1039,66 @@ def delete_model(response, material_type_id, rubber_id, temp_id, model_name):
         "temp_info": temp_info,
     }
     return render(response, "main/delete_form.html", context)
+
+
+def model_info(response, material_type_id, rubber_id, temp_id, model_name):
+    material_info = Rubber.objects.get(pk=rubber_id)
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    rubber_info = Rubber.objects.get(pk=rubber_id)
+    if ArrudaBoyce.objects.filter(name=model_name).exists():
+        model_info = ArrudaBoyce.objects.get(name=model_name)
+        return render(response, "main/arruda_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    elif MooneyRivlin.objects.filter(name=model_name).exists():
+        model_info = MooneyRivlin.objects.get(name=model_name)
+        return render(response, "main/mooney_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    elif Polynomial.objects.filter(name=model_name).exists():
+        model_info = Polynomial.objects.get(name=model_name)
+        return render(response, "main/polynomial_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    elif Yeoh.objects.filter(name=model_name).exists():
+        model_info = Yeoh.objects.get(name=model_name)
+        return render(response, "main/yeoh_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    elif Ogden.objects.filter(name=model_name).exists():
+        model_info = Ogden.objects.get(name=model_name)
+        return render(response, "main/ogden_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    elif NeoHooke.objects.filter(name=model_name).exists():
+        model_info = NeoHooke.objects.get(name=model_name)
+        return render(response, "main/ogden_info.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "model_info": model_info,
+            "temp_info": temp_info,
+            "rubber_info": rubber_info,
+        })
+    else:
+        return HttpResponse("Missing material model")

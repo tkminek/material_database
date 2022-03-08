@@ -209,7 +209,7 @@ class ArrudaBoyceForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
             "nu": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ Value"}),
-            "lambda_m": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ Value"}),
+            "lambda_m": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λm Value"}),
             "D": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D Value"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }
@@ -267,13 +267,13 @@ class OgdenForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Model Name"}),
             "nu_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ1 Value"}),
-            "alfa_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ1 Value"}),
+            "alfa_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type α1 Value"}),
             "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D1 Value"}),
             "nu_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ2 Value"}),
-            "alfa_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ2 Value"}),
+            "alfa_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type α2 Value"}),
             "D_2": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D2 Value"}),
             "nu_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type μ3 Value"}),
-            "alfa_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type λ3 Value"}),
+            "alfa_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type α3 Value"}),
             "D_3": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D3 Value"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }

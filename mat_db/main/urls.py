@@ -62,4 +62,5 @@ urlpatterns = [
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_neo_hooke', views.create_neo_hooke, name="create_neo_hooke"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/update_model', views.update_model, name="update_model"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/delete_model', views.delete_model, name="delete_model"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/model_info', views.model_info, name="model_info"),
 ]
