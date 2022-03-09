@@ -121,6 +121,9 @@ Material info
                     <a class="btn btn-success " href="{%url 'create_sn_curve' material_type.id material_info.id %}">Add Sn curve</a>
                 </td>
             </table>
+            <br>
+            <hr class="mt-0 mb-4">
+            <a class="btn btn-success " href="{%url 'create_custom_curve' material_type.id material_info.id %}">Add Custom curve</a>
             {% else %}
             <table>
                 <td class="text-center align-middle">
@@ -134,6 +137,9 @@ Material info
                     <a class="btn btn-success disabled" href="{%url 'create_sn_curve' material_type.id material_info.id %}">Add Sn curve</a>
                 </td>
             </table>
+            <br>
+            <hr class="mt-0 mb-4">
+            <a class="btn btn-success disabled" href="{%url 'create_custom_curve' material_type.id material_info.id %}">Add Custom curve</a>
             {% endif %}
         </div>
     </div>

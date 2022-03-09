@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "main/base.html" %}
+{% block title %}
+Curve info
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+        <h1 class="mt-2">{{material_info.name}}</h1>
+        <hr class="mt-0 mb-4">
+        <div>
+            <p class="mb-0"><h5>Curve name : {{curve_info.name}}</h5></p>
+        </div>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center align-middle" scope="col">Number of cycles:<br> Nf [-]</th>
+                <th class="text-center align-middle" scope="col">Strain Amplitude:<br> Sa [Mpa]</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in data%}
+                <tr>
+                {% for cell in row%}
+                        <th class="text-center align-middle" scope="row">{{cell}}</th>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <div>
+            <p class="mb-0">comment : {{curve_info.comment}}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div id = "container" style = "width: 600px; height: 200px; margin: 0 auto">
+              <script language = "JavaScript">
+                 function drawChart() {
+                    // Define the chart to be drawn.
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('number', 'nf');
+                    data.addColumn('number', 'Stress amplitude');
+                    data.addRows({{data|safe}});
+
+                    // Set chart options
+                    var options = {'title' : '{{curve_info.name}}  - x:log , y:lin  ',
+                       hAxis: {
+                          title: ' Number of cycles to failure [ nf ]',
+                          scaleType: 'log',
+                          format: 'scientific'
+                       },
+                       vAxis: {
+                          title: ' Stress Amplitude [ MPa ] ',
+                       },
+                       'width':600,
+                       'height':500,
+                       curveType: 'function'
+                    };
+
+                    // Instantiate and draw the chart.
+                    var chart = new google.visualization.LineChart(document.getElementById('container'));
+                    chart.draw(data, options);
+                 }
+                 google.charts.setOnLoadCallback(drawChart);
+              </script>
+        </div>
+    </div>
+  </div>
+</div>
+<br>
+<hr class="mt-0 mb-4">
+<div class="container">
+    <input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
+</div>
+{% endblock %}

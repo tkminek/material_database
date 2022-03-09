@@ -1,4 +1,4 @@
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke, MaterialCustomCurve, PlasticCustomCurve
 from django import forms
 
 
@@ -289,3 +289,43 @@ class NeoHookeForm(forms.ModelForm):
             "D_1": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type D_1 Value"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments"}),
         }
+
+
+class MaterialCustomCurveForm(forms.ModelForm):
+    class Meta:
+        model = MaterialCustomCurve
+        exclude = ['material_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
+            "curve_type": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Curve Type"}),
+            "x_axis": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Type X Axis Name And unit'}),
+            "x_axis_type": forms.Select(attrs={"class": "form-control", "placeholder": 'Choice X Axis Type'}),
+            "x_value": forms.TextInput(attrs={"class": "form-control", "placeholder": 'X Axis Value List - Split By ","'}),
+            "y_axis": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Type Y Axis Name And Unit'}),
+            "y_axis_type": forms.Select(attrs={"class": "form-control", "placeholder": 'Choice Y Axis Type'}),
+            "y_value": forms.TextInput(attrs={"class": "form-control", "placeholder": 'Y Axis Value List - Split By ","'}),
+            "comment": forms.Textarea(attrs={"class": "form-control", "placeholder": "Type Your Comments For Curve"}),
+        }
+
+
+class PlasticCustomCurveForm(forms.ModelForm):
+    class Meta:
+        model = PlasticCustomCurve
+        exclude = ['fibre_id']
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Cyclic Curve Name"}),
+            "curve_type": forms.TextInput(attrs={"class": "form-control", "placeholder": "Type Curve Type"}),
+            "x_axis": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": 'Type X Axis Name And unit'}),
+            "x_axis_type": forms.Select(attrs={"class": "form-control", "placeholder": 'Choice X Axis Type'}),
+            "x_value": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": 'X Axis Value List - Split By ","'}),
+            "y_axis": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": 'Type Y Axis Name And Unit'}),
+            "y_axis_type": forms.Select(attrs={"class": "form-control", "placeholder": 'Choice Y Axis Type'}),
+            "y_value": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": 'Y Axis Value List - Split By ","'}),
+            "comment": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Type Your Comments For Curve"}),
+        }
+

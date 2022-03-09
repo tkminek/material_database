@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm, ArrudaBoyceForm, MooneyRivlinForm, PolynomialForm, YeohForm, OgdenForm, NeoHookeForm
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke, MaterialCustomCurve, PlasticCustomCurve
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm, ArrudaBoyceForm, MooneyRivlinForm, PolynomialForm, YeohForm, OgdenForm, NeoHookeForm, MaterialCustomCurveForm, PlasticCustomCurveForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter, RubberTempFilter
@@ -105,7 +105,8 @@ def material_info(response, material_type_id, material_id):
     en_curve = EnCurve.objects.filter(material_id=material_id)
     sn_curve = SnCurve.objects.filter(material_id=material_id)
     s_curve = StaticCurve.objects.filter(material_id=material_id)
-    curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve))
+    custom_curve = MaterialCustomCurve.objects.filter(material_id=material_id)
+    curve_ls = list(chain(c_curve, en_curve, sn_curve, s_curve, custom_curve))
     return render(response, "main/material_info.html", {
         "material_type": material_type,
         "material_info": material_info,
@@ -179,6 +180,17 @@ def curve_info(response, material_type_id, material_id, curve_name):
             "curve_info": curve_info,
             "material_info": material_info,
             "data": data,
+        })
+    elif MaterialCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info = MaterialCustomCurve.objects.get(name=curve_name)
+        data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+        return render(response, "main/material_custom_curve.html", {
+            "material_type": material_type,
+            "curve_info": curve_info,
+            "material_info": material_info,
+            "data_axis": data_axis,
+            "data_value": data_value,
+            "data_axis_type": data_axis_type,
         })
     else:
         return HttpResponse("chyba")
@@ -340,6 +352,20 @@ def create_sn_curve(response, material_type_id, material_id):
     return render(response, "main/add_update_form.html", context)
 
 
+def create_custom_curve(response, material_type_id, material_id):
+    form = MaterialCustomCurveForm()
+    if response.method == "POST":
+        form = MaterialCustomCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["material_id"] = Material.objects.get(pk=material_id)
+            sn_model = MaterialCustomCurve(**cleaned_data)
+            sn_model.save()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
+    return render(response, "main/add_update_form.html", context)
+
+
 def update_curve(response, material_type_id, material_id, curve_name):
     if StaticCurve.objects.filter(name=curve_name).exists():
         curve_info_s = StaticCurve.objects.get(name=curve_name)
@@ -373,6 +399,14 @@ def update_curve(response, material_type_id, material_id, curve_name):
             if form.is_valid():
                 form.save()
                 return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif MaterialCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = MaterialCustomCurve.objects.get(name=curve_name)
+        form = MaterialCustomCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = MaterialCustomCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
     context = {"form": form, "material_type_id": material_type_id, "material_id": material_id}
     return render(response, "main/add_update_form.html", context)
 
@@ -396,6 +430,11 @@ def delete_curve(response, material_type_id, material_id, curve_name):
             return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
     elif SnCurve.objects.filter(name=curve_name).exists():
         curve_info = SnCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
+    elif MaterialCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info = MaterialCustomCurve.objects.get(name=curve_name)
         if response.method == "POST":
             curve_info.delete()
             return redirect('material_info', material_type_id=material_type_id, material_id=material_id)
@@ -445,7 +484,8 @@ def fibre_info(response, material_type_id, plastic_id, water_id, temp_id, fibre_
     fibre_info = FibreOrientation.objects.get(pk=fibre_id)
     sn_curve = FibreSnCurve.objects.filter(fibre_id=fibre_id)
     s_curve = FibreStaticCurve.objects.filter(fibre_id=fibre_id)
-    curve_ls = list(chain(sn_curve, s_curve))
+    custom_curve = PlasticCustomCurve.objects.filter(fibre_id=fibre_id)
+    curve_ls = list(chain(sn_curve, s_curve, custom_curve))
     return render(response, "main/fibre_info.html", {
         "material_type": material_type,
         "material_info": material_info,
@@ -486,9 +526,19 @@ def fibre_curve_info(response, material_type_id, plastic_id, water_id, temp_id, 
             "curve_info": curve_info,
             "data": data,
         })
+    elif PlasticCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info = PlasticCustomCurve.objects.get(name=curve_name)
+        data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+        return render(response, "main/material_custom_curve.html", {
+            "material_type": material_type,
+            "material_info": material_info,
+            "curve_info": curve_info,
+            "data_axis": data_axis,
+            "data_value": data_value,
+            "data_axis_type": data_axis_type,
+        })
     else:
         return HttpResponse("chyba")
-
 
 ###   CREATE/ADD/EDIT PLASTIC   ###
 def create_plastic(response, material_type_id):
@@ -663,6 +713,20 @@ def create_sn_curve_fibre(response, material_type_id, plastic_id, water_id, temp
     return render(response, "main/add_update_form.html", context)
 
 
+def create_custom_plastic_curve(response, material_type_id, plastic_id, water_id, temp_id, fibre_id):
+    form = PlasticCustomCurveForm()
+    if response.method == "POST":
+        form = PlasticCustomCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["fibre_id"] = FibreOrientation.objects.get(pk=fibre_id)
+            sn_model = PlasticCustomCurve(**cleaned_data)
+            sn_model.save()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    context = {"form": form}
+    return render(response, "main/add_update_form.html", context)
+
+
 def update_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
     if FibreStaticCurve.objects.filter(name=curve_name).exists():
         curve_info_s = FibreStaticCurve.objects.get(name=curve_name)
@@ -681,6 +745,14 @@ def update_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id
             if form.is_valid():
                 form.save()
                 return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    elif PlasticCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info_s = PlasticCustomCurve.objects.get(name=curve_name)
+        form = PlasticCustomCurveForm(instance=curve_info_s)
+        if response.method == "POST":
+            form = PlasticCustomCurveForm(response.POST, instance=curve_info_s)
+            if form.is_valid():
+                form.save()
+                return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
     context = {"form": form}
     return render(response, "main/add_update_form.html", context)
 
@@ -694,6 +766,11 @@ def delete_curve_fibre(response, material_type_id, plastic_id, water_id, temp_id
             return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
     elif FibreSnCurve.objects.filter(name=curve_name).exists():
         curve_info = FibreSnCurve.objects.get(name=curve_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)
+    elif PlasticCustomCurve.objects.filter(name=curve_name).exists():
+        curve_info = PlasticCustomCurve.objects.get(name=curve_name)
         if response.method == "POST":
             curve_info.delete()
             return redirect('fibre_info', material_type_id=material_type_id, plastic_id=plastic_id, water_id=water_id, temp_id=temp_id, fibre_id=fibre_id)

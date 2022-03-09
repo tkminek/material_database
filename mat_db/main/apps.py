@@ -40,7 +40,7 @@ class Graph:
         nf = data.Nf.split(",")
         data = []
         for s, c in zip(sa, nf):
-            data.append([float(c), round(float(s),1)])
+            data.append([float(c), round(float(s), 1)])
         return data
 
     @staticmethod
@@ -55,3 +55,13 @@ class Graph:
             data.append([ea, sa])
         return data
 
+    @staticmethod
+    def custom_curve(data):
+        x_value = data.x_value.split(",")
+        y_value = data.y_value.split(",")
+        data_axis_type = {"x_axis_type": data.x_axis_type, "y_axis_type": data.y_axis_type}
+        data_axis = {"x_axis": data.x_axis, "y_axis": data.y_axis}
+        data_value = []
+        for xv, yv in zip(x_value, y_value):
+            data_value.append([float(xv), float(yv)])
+        return data_axis, data_value, data_axis_type

@@ -110,7 +110,6 @@ Material info
              </tr>
              {% empty %}
              <h5>Sorry no available data</h5>
-
              {% endfor %}
          </tbody>
        </table>
@@ -125,6 +124,9 @@ Material info
                     <a class="btn btn-success " href="{%url 'create_sn_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add Sn curve</a>
                 </td>
             </table>
+            <br>
+            <hr class="mt-0 mb-4">
+            <a class="btn btn-success " href="{%url 'create_custom_plastic_curve' material_type.id material_info.id water_info.id temp_info.id fibre_info.id %}">Add Custom curve</a>
             {% else %}
             <table>
                 <td class="text-center align-middle">
@@ -132,6 +134,9 @@ Material info
                     <a class="btn btn-success disabled" href="{%url 'create_sn_curve_fibre' material_type.id material_info.id water_info.id temp_info.id fibre_info.id%}">Add Sn curve</a>
                 </td>
             </table>
+            <br>
+            <hr class="mt-0 mb-4">
+            <a class="btn btn-success disabled" href="{%url 'create_custom_plastic_curve' material_type.id material_info.id water_info.id temp_info.id fibre_info.id %}">Add Custom curve</a>
             {% endif %}
         </div>
     </div>
