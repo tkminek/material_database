@@ -313,3 +313,14 @@ class PlasticCustomCurve(models.Model):
     fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
 
 
+class RubberCustomCurve(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    curve_type = models.CharField(max_length=20000, blank=True)
+    x_axis = models.CharField(max_length=20000, blank=True)
+    x_axis_type = models.CharField(max_length=200, choices=(("lin", "lin"), ("log", "log")))
+    x_value = models.CharField(max_length=20000, blank=True)
+    y_axis = models.CharField(max_length=20000, blank=True)
+    y_axis_type = models.CharField(max_length=200, choices=(("lin", "lin"), ("log", "log")))
+    y_value = models.CharField(max_length=20000, blank=True)
+    comment = models.CharField(max_length=1000, blank=True)
+    rubber_temp_id = models.ForeignKey(RubberTemp, on_delete=models.CASCADE)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke, MaterialCustomCurve, PlasticCustomCurve
-from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm, ArrudaBoyceForm, MooneyRivlinForm, PolynomialForm, YeohForm, OgdenForm, NeoHookeForm, MaterialCustomCurveForm, PlasticCustomCurveForm
+from .models import MaterialType, Material, SnCurve, EnCurve, CyclicCurve, StaticCurve, Hose, HoseDynamic, HoseStatic, Plastic, WaterContent, Temperature, FibreOrientation, FibreStaticCurve, FibreSnCurve, Rubber, RubberTemp, ArrudaBoyce, MooneyRivlin, Polynomial, Yeoh, Ogden, NeoHooke, MaterialCustomCurve, PlasticCustomCurve, RubberCustomCurve
+from .forms import MaterialForm, HoseForm, HoseStaticForm, HoseDynamicForm, StaticCurveForm, CyclicCurveForm, EnCurveForm, SnCurveForm, PlasticForm, WaterContentForm, TemperatureForm, FibreOrientationForm, FibreStaticCurveForm, FibreSnCurveForm, RubberForm, RubberTempForm, ArrudaBoyceForm, MooneyRivlinForm, PolynomialForm, YeohForm, OgdenForm, NeoHookeForm, MaterialCustomCurveForm, PlasticCustomCurveForm, RubberCustomCurveForm
 from itertools import chain
 from .apps import Graph
 from . filters import MaterialFilter, HoseFilter, WaterFilter, TempFilter, FibreFilter, RubberTempFilter
@@ -874,7 +874,8 @@ def rubber_info(response, material_type_id, rubber_id, temp_id):
     yeoh = Yeoh.objects.filter(rubber_temp_id=temp_id)
     ogden = Ogden.objects.filter(rubber_temp_id=temp_id)
     neo_hooke = NeoHooke.objects.filter(rubber_temp_id=temp_id)
-    model_ls = list(chain(arruda_boyce, mooney_rivlin, polynomial, yeoh, ogden, neo_hooke))
+    custom_curve = RubberCustomCurve.objects.filter(rubber_temp_id=temp_id)
+    model_ls = list(chain(arruda_boyce, mooney_rivlin, polynomial, yeoh, ogden, neo_hooke, custom_curve))
     return render(response, "main/rubber_info.html", {
         "material_type": material_type,
         "material_info": material_info,
@@ -1016,6 +1017,28 @@ def create_neo_hooke(response, material_type_id, rubber_id, temp_id):
     return render(response, "main/add_update_form.html", context)
 
 
+def create_custom_rubber_curve(response, material_type_id, rubber_id, temp_id):
+    form = RubberCustomCurveForm()
+    material_type = MaterialType.objects.get(pk=material_type_id)
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    if response.method == "POST":
+        form = RubberCustomCurveForm(response.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            cleaned_data["rubber_temp_id"] = RubberTemp.objects.get(pk=temp_id)
+            model = RubberCustomCurve(**cleaned_data)
+            model.save()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    context = {
+        "form": form,
+        "material_type": material_type,
+        "material_info": material_info,
+        "temp_info": temp_info,
+    }
+    return render(response, "main/add_update_form.html", context)
+
+
 def update_model(response, material_type_id, rubber_id, temp_id, model_name):
     material_type = MaterialType.objects.get(pk=material_type_id)
     temp_info = RubberTemp.objects.get(pk=temp_id)
@@ -1067,6 +1090,14 @@ def update_model(response, material_type_id, rubber_id, temp_id, model_name):
             if form.is_valid():
                 form.save()
                 return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif RubberCustomCurve.objects.filter(name=model_name).exists():
+        model_info_a = RubberCustomCurve.objects.get(name=model_name)
+        form = RubberCustomCurveForm(instance=model_info_a)
+        if response.method == "POST":
+            form = RubberCustomCurveForm(response.POST, instance=model_info_a)
+            if form.is_valid():
+                form.save()
+                return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
     context = {
         "form": form,
         "material_type": material_type,
@@ -1107,6 +1138,11 @@ def delete_model(response, material_type_id, rubber_id, temp_id, model_name):
             return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
     elif NeoHooke.objects.filter(name=model_name).exists():
         curve_info = NeoHooke.objects.get(name=model_name)
+        if response.method == "POST":
+            curve_info.delete()
+            return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
+    elif RubberCustomCurve.objects.filter(name=model_name).exists():
+        curve_info = RubberCustomCurve.objects.get(name=model_name)
         if response.method == "POST":
             curve_info.delete()
             return redirect('rubber_info', material_type_id=material_type_id, rubber_id=rubber_id, temp_id=temp_id)
@@ -1176,6 +1212,17 @@ def model_info(response, material_type_id, rubber_id, temp_id, model_name):
             "model_info": model_info,
             "temp_info": temp_info,
             "rubber_info": rubber_info,
+        })
+    elif RubberCustomCurve.objects.filter(name=model_name).exists():
+        curve_info = RubberCustomCurve.objects.get(name=model_name)
+        data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+        return render(response, "main/material_custom_curve.html", {
+            "material_type": material_type,
+            "curve_info": curve_info,
+            "material_info": material_info,
+            "data_axis": data_axis,
+            "data_value": data_value,
+            "data_axis_type": data_axis_type,
         })
     else:
         return HttpResponse("Missing material model")

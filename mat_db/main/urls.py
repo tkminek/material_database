@@ -62,6 +62,7 @@ urlpatterns = [
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_yeoh', views.create_yeoh, name="create_yeoh"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_ogden', views.create_ogden, name="create_ogden"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_neo_hooke', views.create_neo_hooke, name="create_neo_hooke"),
+    path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/create_custom_rubber_curve', views.create_custom_rubber_curve, name="create_custom_rubber_curve"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/update_model', views.update_model, name="update_model"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/delete_model', views.delete_model, name="delete_model"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/model_info', views.model_info, name="model_info"),
