@@ -505,7 +505,7 @@ def fibre_curve_info(response, material_type_id, plastic_id, water_id, temp_id, 
     if FibreSnCurve.objects.filter(name=curve_name).exists():
         curve_info = FibreSnCurve.objects.get(name=curve_name)
         data = Graph().sn_curve(curve_info)
-        return render(response, "main/sn_curve.html", {
+        return render(response, "main/plastic_sn_curve.html", {
             "material_type": material_type,
             "material_info": material_info,
             "water_info": water_info,
@@ -1226,3 +1226,45 @@ def model_info(response, material_type_id, rubber_id, temp_id, model_name):
         })
     else:
         return HttpResponse("Missing material model")
+
+
+def material_sn_export(response, material_type_id, material_id, curve_name):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=data.txt"
+    material_info = Material.objects.get(pk=material_id)
+    curve_info = SnCurve.objects.get(name=curve_name)
+    data = Graph().sn_curve(curve_info)
+    lines = [
+        f"Material name: {material_info.name}\n",
+        f"Curve name: {curve_info.name}\n\n",
+        f"Nf [-], Sa [Mpa]\n",
+             ]
+    for row in data:
+        lines.append(f"{row[0]}, {row[1]}\n")
+    lines.append(f"\ncomment: {curve_info.comment}")
+    response.writelines(lines)
+    return response
+
+
+def plastic_sn_export(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=data.txt"
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_info = Temperature.objects.get(pk=temp_id)
+    fibre_info = FibreOrientation.objects.get(pk=fibre_id)
+    curve_info = FibreSnCurve.objects.get(name=curve_name)
+    data = Graph().sn_curve(curve_info)
+    lines = [
+        f"Material name: {material_info.name}\n",
+        f"Curve name: {curve_info.name}\n",
+        f"Condition : {water_info.name}\n",
+        f"Temperature : {temp_info.name}\n",
+        f"Fibre orientation: {fibre_info.name}\n\n",
+        f"Nf [-], Sa [Mpa]\n",
+             ]
+    for row in data:
+        lines.append(f"{row[0]}, {row[1]}\n")
+    lines.append(f"\ncomment: {curve_info.comment}")
+    response.writelines(lines)
+    return response

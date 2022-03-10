@@ -66,4 +66,6 @@ urlpatterns = [
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/update_model', views.update_model, name="update_model"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/delete_model', views.delete_model, name="delete_model"),
     path('material_type_list/rubber/<int:material_type_id>/<int:rubber_id>/<int:temp_id>/<str:model_name>/model_info', views.model_info, name="model_info"),
+    path('material_type_list/<int:material_type_id>/<int:material_id>/<str:curve_name>/export', views.material_sn_export, name="material_sn_export"),
+    path('material_type_list/plastic/<int:material_type_id>/<int:plastic_id>/<int:water_id>/<int:temp_id>/<int:fibre_id>/<str:curve_name>/export', views.plastic_sn_export, name="plastic_sn_export"),
 ]
