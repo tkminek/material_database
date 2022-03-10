@@ -74,6 +74,6 @@ Curve info
 <hr class="mt-0 mb-4">
 <div class="container">
     <input class="btn btn-primary" type=button value="Back to {{material_info.name}} basic info" onClick="javascript:history.go(-1);">
-    <a class="btn btn-success " href="{%url 'material_custom_export' material_type.id material_info.id curve_info.name%}">Export data</a>
+    <a class="btn btn-success " href="{%url 'plastic_custom_export' material_type.id material_info.id water_info.id temp_info.id fibre_info.id curve_info.name%}">Export data</a>
 </div>
 {% endblock %}

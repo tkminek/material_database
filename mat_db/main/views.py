@@ -529,9 +529,12 @@ def fibre_curve_info(response, material_type_id, plastic_id, water_id, temp_id, 
     elif PlasticCustomCurve.objects.filter(name=curve_name).exists():
         curve_info = PlasticCustomCurve.objects.get(name=curve_name)
         data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
-        return render(response, "main/material_custom_curve.html", {
+        return render(response, "main/plastic_custom_curve.html", {
             "material_type": material_type,
             "material_info": material_info,
+            "water_info": water_info,
+            "temp_info": temp_info,
+            "fibre_info": fibre_info,
             "curve_info": curve_info,
             "data_axis": data_axis,
             "data_value": data_value,
@@ -1206,7 +1209,7 @@ def model_info(response, material_type_id, rubber_id, temp_id, model_name):
         })
     elif NeoHooke.objects.filter(name=model_name).exists():
         model_info = NeoHooke.objects.get(name=model_name)
-        return render(response, "main/ogden_info.html", {
+        return render(response, "main/neo_info.html", {
             "material_type": material_type,
             "material_info": material_info,
             "model_info": model_info,
@@ -1216,11 +1219,12 @@ def model_info(response, material_type_id, rubber_id, temp_id, model_name):
     elif RubberCustomCurve.objects.filter(name=model_name).exists():
         curve_info = RubberCustomCurve.objects.get(name=model_name)
         data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
-        return render(response, "main/material_custom_curve.html", {
+        return render(response, "main/rubber_custom_curve.html", {
             "material_type": material_type,
             "curve_info": curve_info,
             "material_info": material_info,
             "data_axis": data_axis,
+            "temp_info": temp_info,
             "data_value": data_value,
             "data_axis_type": data_axis_type,
         })
@@ -1240,6 +1244,24 @@ def material_sn_export(response, material_type_id, material_id, curve_name):
         f"Nf [-], Sa [Mpa]\n",
              ]
     for row in data:
+        lines.append(f"{row[0]}, {row[1]}\n")
+    lines.append(f"\ncomment: {curve_info.comment}")
+    response.writelines(lines)
+    return response
+
+
+def material_custom_export(response, material_type_id, material_id, curve_name):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=data.txt"
+    material_info = Material.objects.get(pk=material_id)
+    curve_info = MaterialCustomCurve.objects.get(name=curve_name)
+    data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+    lines = [
+        f"Material name: {material_info.name}\n",
+        f"Curve name: {curve_info.name}\n\n",
+        f"{data_axis['x_axis']}, {data_axis['x_axis']}\n",
+             ]
+    for row in data_value:
         lines.append(f"{row[0]}, {row[1]}\n")
     lines.append(f"\ncomment: {curve_info.comment}")
     response.writelines(lines)
@@ -1268,3 +1290,48 @@ def plastic_sn_export(response, material_type_id, plastic_id, water_id, temp_id,
     lines.append(f"\ncomment: {curve_info.comment}")
     response.writelines(lines)
     return response
+
+
+def plastic_custom_export(response, material_type_id, plastic_id, water_id, temp_id, fibre_id, curve_name):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=data.txt"
+    material_info = Plastic.objects.get(pk=plastic_id)
+    water_info = WaterContent.objects.get(pk=water_id)
+    temp_info = Temperature.objects.get(pk=temp_id)
+    fibre_info = FibreOrientation.objects.get(pk=fibre_id)
+    curve_info = PlasticCustomCurve.objects.get(name=curve_name)
+    data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+    lines = [
+        f"Material name: {material_info.name}\n",
+        f"Curve name: {curve_info.name}\n",
+        f"Condition : {water_info.name}\n",
+        f"Temperature : {temp_info.name}\n",
+        f"Fibre orientation: {fibre_info.name}\n\n",
+        f"{data_axis['x_axis']}, {data_axis['x_axis']}\n",
+             ]
+    for row in data_value:
+        lines.append(f"{row[0]}, {row[1]}\n")
+    lines.append(f"\ncomment: {curve_info.comment}")
+    response.writelines(lines)
+    return response
+
+
+def rubber_custom_export(response, material_type_id, rubber_id, temp_id, model_name):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=data.txt"
+    material_info = Rubber.objects.get(pk=rubber_id)
+    temp_info = RubberTemp.objects.get(pk=temp_id)
+    curve_info = RubberCustomCurve.objects.get(name=model_name)
+    data_axis, data_value, data_axis_type = Graph().custom_curve(curve_info)
+    lines = [
+        f"Material name: {material_info.name}\n",
+        f"Curve name: {curve_info.name}\n",
+        f"Temperature : {temp_info.name}\n",
+        f"{data_axis['x_axis']}, {data_axis['x_axis']}\n\n",
+             ]
+    for row in data_value:
+        lines.append(f"{row[0]}, {row[1]}\n")
+    lines.append(f"\ncomment: {curve_info.comment}")
+    response.writelines(lines)
+    return response
+
