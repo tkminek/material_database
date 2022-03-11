@@ -10,11 +10,11 @@ class MaterialType(models.Model):
 
 class Material(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    E = models.FloatField(blank=True)
-    nu = models.FloatField(blank=True)
-    Rm = models.FloatField(blank=True)
-    Re = models.FloatField(blank=True)
-    Ru = models.FloatField(blank=True)
+    E = models.FloatField()
+    nu = models.FloatField()
+    Rm = models.FloatField()
+    Re = models.FloatField()
+    Ru = models.FloatField()
     comment = models.CharField(blank=True, max_length=1000)
     material_type_id = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
 
@@ -25,8 +25,8 @@ class Material(models.Model):
 class CyclicCurve(models.Model):
     curve_type = "Cyclic curve"
     name = models.CharField(max_length=200, unique=True)
-    K = models.FloatField(max_length=200, blank=True)
-    n = models.FloatField(max_length=200, blank=True)
+    K = models.FloatField(max_length=200)
+    n = models.FloatField(max_length=200)
     comment = models.CharField(max_length=1000, blank=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
@@ -37,8 +37,8 @@ class CyclicCurve(models.Model):
 class StaticCurve(models.Model):
     curve_type = "Static curve"
     name = models.CharField(max_length=200, unique=True)
-    K = models.FloatField(max_length=200, blank=True)
-    n = models.FloatField(max_length=200, blank=True)
+    K = models.FloatField(max_length=200)
+    n = models.FloatField(max_length=200)
     comment = models.CharField(max_length=1000, blank=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
@@ -49,10 +49,10 @@ class StaticCurve(models.Model):
 class EnCurve(models.Model):
     curve_type = "En curve"
     name = models.CharField(max_length=200, unique=True)
-    Sf = models.FloatField(blank=True)
-    b = models.FloatField(blank=True)
-    c = models.FloatField(blank=True)
-    Ef = models.FloatField(blank=True)
+    Sf = models.FloatField()
+    b = models.FloatField()
+    c = models.FloatField()
+    Ef = models.FloatField()
     comment = models.CharField(max_length=1000, blank=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
@@ -63,8 +63,8 @@ class EnCurve(models.Model):
 class SnCurve(models.Model):
     curve_type = "Sn curve"
     name = models.CharField(max_length=200, unique=True)
-    Sa = models.CharField(max_length=20000, blank=True)
-    Nf = models.CharField(max_length=20000, blank=True)
+    Sa = models.CharField(max_length=20000)
+    Nf = models.CharField(max_length=20000)
     comment = models.CharField(max_length=1000, blank=True)
     material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
 
@@ -88,12 +88,12 @@ class Hose(models.Model):
 
 
 class HoseStatic(models.Model):
-    Stat_E_min40 = models.FloatField(blank=True)
-    Stat_E_plus23 = models.FloatField(blank=True)
-    Stat_E_plus100 = models.FloatField(blank=True)
-    Stat_nu_min40 = models.FloatField(default=0.495, blank=True)
-    Stat_nu_plus23 = models.FloatField(default=0.495, blank=True)
-    Stat_nu_plus100 = models.FloatField(default=0.495, blank=True)
+    Stat_E_min40 = models.FloatField()
+    Stat_E_plus23 = models.FloatField()
+    Stat_E_plus100 = models.FloatField()
+    Stat_nu_min40 = models.FloatField(default=0.495)
+    Stat_nu_plus23 = models.FloatField(default=0.495)
+    Stat_nu_plus100 = models.FloatField(default=0.495)
     Stat_comment = models.CharField(max_length=1000, blank=True)
     Stat_hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
 
@@ -102,12 +102,12 @@ class HoseStatic(models.Model):
 
 
 class HoseDynamic(models.Model):
-    Dyn_E_min40 = models.FloatField(blank=True)
-    Dyn_E_plus23 = models.FloatField(blank=True)
-    Dyn_E_plus100 = models.FloatField(blank=True)
-    Dyn_nu_min40 = models.FloatField(default=0.495, blank=True)
-    Dyn_nu_plus23 = models.FloatField(default=0.495, blank=True)
-    Dyn_nu_plus100 = models.FloatField(default=0.495, blank=True)
+    Dyn_E_min40 = models.FloatField()
+    Dyn_E_plus23 = models.FloatField()
+    Dyn_E_plus100 = models.FloatField()
+    Dyn_nu_min40 = models.FloatField(default=0.495)
+    Dyn_nu_plus23 = models.FloatField(default=0.495)
+    Dyn_nu_plus100 = models.FloatField(default=0.495)
     Dyn_comment = models.CharField(max_length=1000, blank=True)
     Dyn_hose_id = models.ForeignKey(Hose, on_delete=models.CASCADE)
 
@@ -141,13 +141,13 @@ class Temperature(models.Model):
 
 class FibreOrientation(models.Model):
     name = models.CharField(max_length=200)
-    E = models.FloatField(blank=True)
-    nu = models.FloatField(blank=True)
-    rho = models.FloatField(blank=True)
-    Rm = models.FloatField(blank=True)
-    Re = models.FloatField(blank=True)
-    Ru = models.FloatField(blank=True)
-    comment = models.CharField(max_length=1000, default="")
+    E = models.FloatField()
+    nu = models.FloatField()
+    rho = models.FloatField()
+    Rm = models.FloatField()
+    Re = models.FloatField()
+    Ru = models.FloatField()
+    comment = models.CharField(max_length=1000, blank=True)
     temperature_id = models.ForeignKey(Temperature, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -157,8 +157,8 @@ class FibreOrientation(models.Model):
 class FibreStaticCurve(models.Model):
     curve_type = "Static curve"
     name = models.CharField(max_length=200, unique=True)
-    K = models.FloatField(max_length=200, blank=True)
-    n = models.FloatField(max_length=200, blank=True)
+    K = models.FloatField(max_length=200)
+    n = models.FloatField(max_length=200)
     comment = models.CharField(max_length=1000, blank=True)
     fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
 
@@ -169,8 +169,8 @@ class FibreStaticCurve(models.Model):
 class FibreSnCurve(models.Model):
     curve_type = "Sn curve"
     name = models.CharField(max_length=200, unique=True)
-    Sa = models.CharField(max_length=20000, blank=True)
-    Nf = models.CharField(max_length=20000, blank=True)
+    Sa = models.CharField(max_length=20000)
+    Nf = models.CharField(max_length=20000)
     comment = models.CharField(max_length=1000, blank=True)
     fibre_id = models.ForeignKey(FibreOrientation, on_delete=models.CASCADE)
 
@@ -186,12 +186,12 @@ class Rubber(models.Model):
 class RubberTemp(models.Model):
     name = models.CharField(max_length=200, unique=True)
     rubber_id = models.ForeignKey(Rubber, on_delete=models.CASCADE)
-    E = models.FloatField(blank=True)
-    nu = models.FloatField(blank=True)
-    rho = models.FloatField(blank=True)
-    Rm = models.FloatField(blank=True)
-    Re = models.FloatField(blank=True)
-    Ru = models.FloatField(blank=True)
+    E = models.FloatField()
+    nu = models.FloatField()
+    rho = models.FloatField()
+    Rm = models.FloatField()
+    Re = models.FloatField()
+    Ru = models.FloatField()
     comment = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
