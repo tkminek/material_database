@@ -7,6 +7,7 @@ class HoseFilter(django_filters.FilterSet):
     HOSE_CHOICES = (
         (" Conti ", " Conti "),
         (" Maflow ", " Maflow "),
+        (" Others ", " Others "),
     )
 
     type = django_filters.ChoiceFilter(label="Hose type",choices=HOSE_CHOICES)

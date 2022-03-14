@@ -75,6 +75,7 @@ class SnCurve(models.Model):
 HOSE_CHOICES = (
     (" Conti ", " Conti "),
     (" Maflow ", " Maflow "),
+    (" Others ", " Others "),
 )
 
 
